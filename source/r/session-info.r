@@ -1,4 +1,4 @@
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -25,7 +25,7 @@
 # Purpose:  Tabulate packages and versions.  print to 3 tier latex table.
 # Input:    N/A
 # Output:   N/A
-############################################################################################
+#############################################################################################################
 
 source('../r/init-analysis.r');
 

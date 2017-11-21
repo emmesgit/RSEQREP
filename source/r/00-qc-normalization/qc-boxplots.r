@@ -1,4 +1,4 @@
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -25,7 +25,7 @@
 # Purpose:  Evaluate correlation between principal components and technical/biological variables
 # Input:    N/A
 # Output:  	N/A
-############################################################################################
+#############################################################################################################
 
 options(scipen = 50) 
 source('../r/init-analysis.r')

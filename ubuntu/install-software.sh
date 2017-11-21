@@ -1,5 +1,5 @@
 #!/bin/bash
-############################################################################################
+##############################################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -26,7 +26,7 @@
 # Purpose:  install software onto 16.0.4 Ubuntu desktop computer required for RSEQREP usage.
 # Input:    N/A
 # Output:   N/A
-############################################################################################
+##############################################################################################################################
 
 ##Add Swap for extra memory if needed 
 sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024

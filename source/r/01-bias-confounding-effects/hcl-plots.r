@@ -1,4 +1,4 @@
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -25,7 +25,7 @@
 # Purpose:  generate hierarchical clustering plots based on per_subject data for outlier analysis
 # Input:    analysis/dist/<spc>_alltp_euc_dist_tmm_normalized_<std>.RData
 # Output:  	N/A
-############################################################################################
+#############################################################################################################
 
 source('../r/init-analysis.r')
 

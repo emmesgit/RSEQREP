@@ -1,4 +1,4 @@
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -25,7 +25,7 @@
 # Purpose:  Tabulate genes that were removed prior to the analysis.
 # Input:    data/annot/excluded_gene_counts.tab
 # Output:  	N/A
-############################################################################################
+#############################################################################################################
 
 source('../r/init-analysis.r')
 

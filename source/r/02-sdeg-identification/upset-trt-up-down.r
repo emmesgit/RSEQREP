@@ -1,4 +1,4 @@
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -26,7 +26,7 @@
 #			Each plot is added to a list and the list is printed at the end of the program
 # Input:    analysis/glm/<scp>_<trt>_<time>_glm_sig.tab.gz
 # Output:  	N/A
-############################################################################################
+#############################################################################################################
 
 source('../r/init-analysis.r')
 

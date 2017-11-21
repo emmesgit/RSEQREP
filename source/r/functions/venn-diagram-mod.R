@@ -1,4 +1,4 @@
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -26,7 +26,7 @@
 #				updating the frame space and moving lables.
 # Input:    N/A
 # Output:  	N/A
-############################################################################################
+#############################################################################################################
 
 vennDiagramMod = function (object, include = "both", names = NULL, mar = rep(1, 
 				4), cex = c(1.5, 1, 0.7), lwd = 1, circle.col = NULL, counts.col = NULL, 

@@ -1,4 +1,4 @@
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -27,7 +27,7 @@
 #			<rseqc_dir>/bam_<qc|rc|jc|gc>_parsed.tab
 #			data/fragment_count_matrix.tab.gz
 # Output:  	data/sample_metadata_rseqc.csv
-############################################################################################
+#############################################################################################################
 
 ## get command line argument
 args = commandArgs(trailingOnly = TRUE)

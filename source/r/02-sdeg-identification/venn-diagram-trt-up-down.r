@@ -1,4 +1,4 @@
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -25,7 +25,7 @@
 # Purpose:  Generate Venn diagrams showing overlap in treatment groups
 # Input:    analysis/glm/<scp>_<trt>_<time>_glm_sig.tab.gz
 # Output:  	N/A
-############################################################################################
+#############################################################################################################
 
 source('../r/init-analysis.r')
 

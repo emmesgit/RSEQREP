@@ -1,4 +1,4 @@
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -25,7 +25,7 @@
 # Purpose:  modifications to the pvclust algorithm.  Max distance cutoff added.
 # Input:    N/A
 # Output:  	N/A
-############################################################################################
+#############################################################################################################
 
 hc2split = function (x) 
 {

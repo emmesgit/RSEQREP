@@ -1,4 +1,4 @@
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -29,7 +29,7 @@
 #			analysis/pvclust/<spc>_<trt>_<time>_pvclust_sig.tab.gz
 #			analysis/pvclust/<spc>_<trt>_<time>_pvclust.RData
 # Output:  	N/A
-############################################################################################
+#############################################################################################################
 
 source('../r/init-analysis.r')
 

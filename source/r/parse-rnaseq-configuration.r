@@ -1,4 +1,4 @@
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -28,7 +28,7 @@
 # Output:   data/gene_sets/all.ensembl.tab.gz
 #			data/analysis_config.csv
 #			data/sample_metadata.csv
-############################################################################################
+#############################################################################################################
 
 library(openxlsx)
 library(stringr)

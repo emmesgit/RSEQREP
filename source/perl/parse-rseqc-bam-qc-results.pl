@@ -1,4 +1,4 @@
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -25,7 +25,7 @@
 # Purpose:	Parse RSeqC bam_stat.py results
 # Input:	list of absolute file paths
 # Output: 	N/A
-############################################################################################
+#############################################################################################################
 
 use strict;
 use warnings;

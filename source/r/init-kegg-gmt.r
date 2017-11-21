@@ -1,4 +1,4 @@
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -25,7 +25,7 @@
 # Purpose: 	generate Kegg pathways based GMT formatted gene sets for enrichment analysis
 # Input:    http://rest.kegg.jp/<get|link|list>/
 # Output:  	./kegg.gmt
-############################################################################################
+#############################################################################################################
 
 ptw2kegg = data.frame(do.call('rbind', strsplit(system('wget -q -O- http://rest.kegg.jp/link/pathway/hsa',intern=T), '\t', fixed=TRUE)),stringsAsFactors=F)
 ptw = data.frame(do.call('rbind', strsplit(system('wget -q -O- http://rest.kegg.jp/list/pathway',intern=T), '\t', fixed=TRUE)),stringsAsFactors=F)

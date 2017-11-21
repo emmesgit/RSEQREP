@@ -1,4 +1,4 @@
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -27,7 +27,7 @@
 # Input:    data/fragment_count_matrix.tab
 #			data/annot/filtered_gene_annotations.tab.gz
 # Output:  	analysis/lcpm/<spc>_alltp_lcpm_<norm>_normalized_<unfiltered|filtered>.tab
-############################################################################################
+#############################################################################################################
 
 source('init-analysis.r')
 

@@ -1,4 +1,4 @@
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -25,7 +25,7 @@
 # Purpose:	Parse read counts from vertical format and outputs gene by sample matrix
 # Input:	File list with tab delimited read count results
 # Output: 	N/A
-############################################################################################
+#############################################################################################################
 
 use strict;
 use warnings;

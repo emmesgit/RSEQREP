@@ -1,5 +1,5 @@
 #!/bin/bash
-############################################################################################
+##############################################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -26,7 +26,7 @@
 # Purpose:  Download GTF formatted Ensembl genome annotations.
 # Input:    N/A
 # Output:   N/A
-############################################################################################
+##############################################################################################################################
 
 ## Command line arguments
 ## $1) ensembl version # ie: 87

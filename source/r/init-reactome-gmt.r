@@ -1,4 +1,4 @@
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -25,7 +25,7 @@
 # Purpose: 	generate Reactome based GMT formatted gene sets for enrichment analysis
 # Input:    http://www.reactome.org/download/current/Ensembl2Reactome.txt
 # Output:  	./reactome.gmt
-############################################################################################
+#############################################################################################################
 
 raw.dta = read.csv('http://www.reactome.org/download/current/Ensembl2Reactome.txt',header=F,sep='\t', stringsAsFactors=F)
 

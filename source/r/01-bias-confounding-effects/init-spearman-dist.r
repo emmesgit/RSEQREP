@@ -1,4 +1,4 @@
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -25,7 +25,7 @@
 # Purpose:  Initialize Spearman distances used for multidimensional scaling
 # Input:    analysis/lcpm/<spc>_alltp_lcpm_<norm>_normalized_filtered.tab
 # Output:  	analysis/dist/<spc>_alltp_spm_dist_<norm>_normalized_<std>.RData
-############################################################################################
+#############################################################################################################
 
 source('init-analysis.r')
 

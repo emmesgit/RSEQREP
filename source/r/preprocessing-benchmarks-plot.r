@@ -1,4 +1,4 @@
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -25,7 +25,7 @@
 # Purpose:  generate plots on peak CPU time, Wall cloc time, RAM, and VM usage for each process
 # Input:    <pre-process-dir>/preprocess.db
 # Output:   N/A
-############################################################################################
+#############################################################################################################
 
 source('../r/init-analysis.r')
 

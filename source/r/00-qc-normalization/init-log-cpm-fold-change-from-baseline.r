@@ -1,4 +1,4 @@
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -26,7 +26,7 @@
 #				If multiple treatment points exist, utilize the mean.
 # Input:    analysis/lcpm/<spc>_alltp_lcpm_tmm_normalized_<unfiltered|filtered>.tab.gz
 # Output:  	analysis/lcpm_fc/<spc>_posttp_lcpm_fold_change_tmm_normalized_<unfiltered|filtered>.tab.gz
-############################################################################################
+#############################################################################################################
 
 source('init-analysis.r')
 

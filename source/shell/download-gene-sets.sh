@@ -1,5 +1,5 @@
 #!/bin/bash
-############################################################################################
+##############################################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -26,7 +26,7 @@
 # Purpose:  Download Blood transcription module gene sets, Reactome gene sets, and kegg pathway AMI based gene sets
 # Input:    N/A
 # Output:   N/A
-############################################################################################
+##############################################################################################################################
 
 ## download and unzip blood transcript modules
 wget 'http://www.nature.com/ni/journal/v15/n2/extref/ni.2789-S5.zip';

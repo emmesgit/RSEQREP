@@ -1,5 +1,5 @@
 #!/bin/bash
-############################################################################################
+#############################################################################################################
 # RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
 # RNA-Seq data processing, analysis, and result reporting
 # 
@@ -26,7 +26,7 @@
 # Purpose:  script to run reporting only steps (knitR/latex based results reporting)
 # Input:    N/A
 # Output:   N/A
-############################################################################################
+#############################################################################################################
 
 ## Point to config file
 CONFIG=config/config.xlsx

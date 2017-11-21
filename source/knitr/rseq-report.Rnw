@@ -1,0 +1,224 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
+% RNA-Seq data processing, analysis, and result reporting
+% 
+% https://github.com/emmesgit/RSEQREP
+%
+% Copyright (C) 2017 The Emmes Corporation 
+% 
+% This program is free software that contains third party software subject to various licenses, 
+% namely, the GNU General Public License version 3 (or later), the GNU Affero General Public License 
+% version 3 (or later), and the LaTeX Project Public License v.1.3(c). A list of the software contained 
+% in this program, including the applicable licenses, can be accessed here: 
+% 
+% https://github.com/emmesgit/RSEQREP/SOFTWARE.xlsx  
+% 
+% You can redistribute and/or modify this program, including its components, only under the terms of 
+% the applicable license(s).  
+%
+% This program is distributed in the hope that it will be useful, but "as is," WITHOUT ANY WARRANTY; 
+% without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+%
+% Program:  rseq-report.Rnw
+% Version:  RSEQREP 1.0.0
+% Author:   Travis L. Jensen and Johannes B. Goll
+% Purpose: 	Knitr Code to genertae entire report -- Pulls .Rnw files for each specific step's figures/tables
+% Input:	rseq-00-qc-normalization-figures.Rnw
+% 			rseq-01-bias-confounding-effects-figures.Rnw
+% 			rseq-02-sdeg-identification-figures.Rnw
+% 			rseq-03-sdeg-clusters-figures.Rnw
+% 			rseq-04-sdeg-organization-known-modules-figures.Rnw
+% 			pre-processing-benchmark-figures.Rnw
+% 			rseq-00-qc-normalization-tables.Rnw
+% 			rseq-01-bias-confounding-effects-tables.Rnw
+% 			rseq-02-sdeg-identification-tables.Rnw
+% 			rseq-03-sdeg-clusters-tables.Rnw
+% 			rseq-04-sdeg-organization-known-modules-tables.Rnw
+% 			system-software-table.Rnw
+% Output:  	N/A
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Import analysis variables
+<<echo = FALSE, results= 'hide', message = FALSE>>=
+source('../r/init-analysis.r')
+@
+
+% Pre-emble
+
+\documentclass[10pt]{article}
+
+\AtBeginDocument{
+  \addtocontents{lot}{\small}
+  \addtocontents{lof}{\small}
+}
+
+\usepackage[top=1in, left=0.8in, bottom=1in, right=0.8in]{geometry}
+
+\usepackage{lastpage}
+\usepackage[T1]{fontenc}
+\usepackage{ebgaramond}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{pdflscape}
+\usepackage{listings}
+\usepackage{longtable}
+\usepackage[hidelinks=true,linkcolor=green]{hyperref}
+\usepackage{enumerate}
+\usepackage{adjustbox,lipsum}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{needspace}
+\usepackage[tableposition=below]{caption}
+\usepackage[section]{placeins}
+\usepackage{setspace}
+\usepackage{lscape}
+\usepackage[capitalize,nameinlink,noabbrev]{cleveref}
+\usepackage[font={footnotesize}]{caption}
+\usepackage{etoolbox}
+\usepackage{tocloft}
+
+%% handle caption spacing
+\captionsetup[longtable]{skip=1em}
+\needspace{20\baselineskip}
+\renewcommand{\thetable}{\arabic{table}}
+\renewcommand{\thefigure}{\arabic{figure}}
+\onehalfspacing
+\captionsetup[figure]{labelfont=bf}
+\captionsetup[table]{labelfont=bf}
+
+% organize paragraphs
+\setcounter{secnumdepth}{5}
+
+% prepare headers and footers
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\today} % header right 
+\fancyhead[L]{\Sexpr{rseq_rep_title_short}} % header left
+
+% Table of contents
+\renewcommand\contentsname{Table of Contents}
+\fancyfoot[L]{This report was generated using \\ RSEQREP Version 1.0.0}
+\fancyfoot[R]{https://github.com/emmesgit/RSEQREP}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[C]{-{\thepage\ of \pageref{LastPage}}-}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+\makeatletter
+\preto{\@tabular}{\parskip=0pt}
+\makeatother
+
+\renewcommand\cftfignumwidth{0.8in}
+\renewcommand\cfttabnumwidth{0.7in}
+\renewcommand\cftfigpresnum{Figure }
+\renewcommand\cfttabpresnum{Table }
+\renewcommand{\figurename}{Figure}
+\renewcommand{\tablename}{Table}
+
+\newcommand{\pb}[1]{\parbox[t][][t]{1.0\linewidth}{#1} \vspace{-2pt}}
+
+\renewcommand\cftfigfont{\small}
+\renewcommand\cfttabfont{\small}
+
+\setlength\parindent{0pt}
+
+% create command for log2 -- subcaptions are truncated at the "$" otherwise 
+\newcommand{\logtwo}{$log_2$ }
+
+% Begin Document
+\begin{document}
+
+% SPECIFY REPORT TITLE
+\title{\textbf{RNA-Seq Report (Version 1.0.0)} 
+\ \\ 
+\ \\
+\ \\
+  \Sexpr{rseq_rep_title_long}
+\date{\today}}
+
+\maketitle
+\newpage
+
+\tableofcontents
+\newpage
+
+{\scriptsize
+\listoffigures
+}
+\newpage
+
+{\scriptsize
+\listoftables
+}
+\newpage
+
+
+\section{Synopsis}
+\Sexpr{study_design_text}
+
+\section{Methods}
+
+\subsection{RNA-Seq experiment}
+\Sexpr{experiment_text}
+
+\subsection{RNA-Seq data preprocessing and data qc}
+The human reference genome assembly, gene models, and associated gene annotation information in the form of a Gene Transfer Format (GTF) were obtained from the ENSEMBL database (Version \Sexpr{ensembl.version}). The genomic reference was built by merging all human chromosomes. Sequence reads were aligned to the reference transcriptome/genome using the \Sexpr{aligner_and_version}). Ensembl gene models were used to guide the alignment process. For each sample, the quality of reference alignments was evaluated using the \textit{RSeQC} software (Version \Sexpr{gsub('bam_stat.py ','',system('bam_stat.py --version',intern=T))}). Quality measures were summarized in tabular form, univariate boxplots, and multivariate starplots.\\
+
+Gene expression quantification was carried out on the gene level using the featureCounts function as implemented in the \textit{Subread} software (Version \Sexpr{gsub(' v','',system("featureCounts -v 2>&1 >/dev/null | grep -o -P ' .*$'",intern=T))}). Reads that overlapped with multiple genes or mapped to multiple genomic locations on the reference genome were excluded. Systematic sample differences in sequencing coverage were corrected for by calculating scaling factors for each sample using the trimmed mean of M-values (TMM) method as implemented in the \textit{edgeR} R package (Version \Sexpr{session = sessionInfo(); session$otherPkgs$edgeR$Version}). Post- normalization, \Sexpr{paste(ensemb_genes_remove,collapse=', ')} genes based on ENSEMBL GTF annotations were excluded from the final read count results (\textbf{\cref{tab:exgenes}}). TMM normalization was executed across all samples to evaluate global gene expression patterns, systematic effects, and outliers. Following outlier removal, TMM-normalization was rerun separately for each specimen type. The resulting normalized data was used for all downstream specimen type-specific analyses.\\ 
+
+For data visualizations and multivariate analyses, TMM-normalized moderated $log_{2}$ counts per million (LCPM) were computed using the \textit{edgeR} R package. To avoid taking the $log_{2}$ of zero values, a TMM-scaled count of \Sexpr{prior.count} was added to each gene. Subject-specific $log_{2}$ fold changes from pre-treatment were calculated for each subject and post-treatment time point by subtracting the pre-treatment LCPM value from the respective post-treatment LCPM value.\\
+
+Genes with \Sexpr{gene_filter_method} expression levels across all samples per specimen type that did not exceed the specified cut off of \Sexpr{flt.lcpm.cut} LCPM were considered to be lowly expressed and were excluded from downstream analysis. To guide the cut-off selection, reverse cumulative distribution functions summarizing the percentage of genes whose \Sexpr{gene_filter_method} LCPM exceeded a certain LCPM cut off were plotted for each specimen type (\textbf{\cref{fig:recdf_plot}}). Filtered TMM-normalized LCPM were standardized (z-score: mean=0, variance=1) and LCPM distributions across samples were inspected for outliers and systematic effects using principal component analysis, multidimensional scaling, and hierarchical clustering analysis. Identified outliers were were excluded from downstream analysis.
+
+\subsubsection{Identification of differentially expressed genes}
+Negative binomial generalized linear models as implemented in the edgeR software were applied to identify differentially expressed (DE) genes after exclusion of outlying samples and lowly expressed genes. TMM-adjusted total read counts per sample were included in the models as an offset to account for systematic sample differences. For each specimen type, DE gene analysis was carried per post-treatment time point (\Sexpr{paste(postb.timesl,collapse=', ')}) in relation to pre-treatment. Each model included coefficients to estimate subject and pre- vs. post-treatment effects, i.e.\ a subject and a time factor. The subject effect for estimating subject-specific pre-treatment levels was added to account for paired samples from the same subject. The statistical significance of the post- vs. pre-treatment effect was evaluated using a likelihood ratio test. To control for testing multiple genes, the false-discovery rate (FDR) based on the Benjamini-Hochberg procedure as implemented in the \textit{p.adjust} R function was applied for each model. Genes with a pre-treatment fold change of $\geq$ \Sexpr{glm.sdeg.fold} and FDR-adjusted p-value < \Sexpr{glm.sdeg.qval} were considered to be DE genes. DE gene results were tabulated and treatment effects in terms of overall $log_{2}$ fold changes and FDR-adjusted p-values were summarized for each specimen type and post-treatment time point using MA plots and Volcano plots. Overlap in DE genes between post-treatment time points and/or specimen types was assessed using Venn diagrams and/or UpSet plots.
+
+\subsubsection{Determination of co-expressed gene clusters}
+Unsupervised multiscale bootstrap resampling as implemented in the \textit{pvclust} R package (Version \Sexpr{session = sessionInfo(); session$otherPkgs$pvclust$Version}) was carried out for each specimen type and post-treatment time point to identify robust clusters of co-expressed genes with correlated $log_{2}$ fold change responses. Genes identified as DE for any post-treatment time point were included as part of this analysis. Bootstrap resampling was based on \Sexpr{pvclust_cor_name} distances between $log_{2}$ fold change responses in combination with the \Sexpr{cluster.method} linkage clustering algorithm using varying dataset sizes. For each dataset size bin, \Sexpr{pvclust.boot} bootstrap samples were obtained, and \textit{pvclust} bootstrap probabilities and unbiased p-values were calculated. An unbiased p-value cut-off of $\geq$ \Sexpr{pvclust.pval} was applied to determine significant clusters. The maximum distance to form a significant cluster was set to \Sexpr{pvclust.max.dist}. Clusters that were formed at a larger distance were excluded. Gene cluster dendrograms were visualized and cluster information was tabulated. For gene clusters with correlated responses across all post-treatment time points (\Sexpr{paste(postb.timesl,collapse=', ')}), pre-treatment fold change time trends across all time points were provided.
+
+\subsubsection{Pathway enrichment analysis}
+Pathway enrichment analysis was carried out separately for specimen type and post-treatment time point using gene sets listed in \textbf{\cref{tab:gsea_gene_sets}}. The enrichment analysis was conducted using the \textit{GOseq} software (Version \Sexpr{session = sessionInfo(); session$otherPkgs$goseq$Version}) which adjusts for RNA-Seq gene length bias. Gene length information was obtained from the Ensembl database using the \textit{biomaRt} R package (Version \Sexpr{session = sessionInfo(); session$otherPkgs$biomaRt$Version}, Ensembl Version \Sexpr{ensembl.version}). Gene length was defined as the length of the longest transcript per gene including untranslated regions and coding sequence. \textit{GOseq} probability weighting functions were estimated for each specimen type and post-treatment time point based on the respective DE gene results. Null distributions were estimated using \textit{GOseq's} random sampling option (\Sexpr{goseq.randomizations} randomizations were applied). To account for testing multiple gene sets, gene sets with a FDR-adjusted p-value < \Sexpr{goseq.fdr.cutoff} were considered to be significantly enriched. In addition, the Jaccard index (to assess agreement between DE genes and gene sets) and enrichment score (-1 x $log_{10}$(FDR-adjusted p-value)) for each gene set was calculated. Pathway enrichment trends over time were visualized using heatmap and radar plots. Overlap in enriched pathways between post-treatment time points and/or specimen types was assessed using using Venn diagrams and/or UpSet plots.
+
+\subsection{Software}
+Data was analyzed using the \textit{R statistical programming language}
+(\Sexpr{gsub('R ','',version$version.string)}) and \textit{R Bioconductor} packages. This report  was generated using the \textit{knitr} R package (Version \Sexpr{session = sessionInfo(); session$otherPkgs$knitr$Version}) and \textit{LaTeX} typesetting software (Version TeX Live 2012/Debian). The operating used was \textit{Ubuntu} (Version \Sexpr{gsub('Description:\tUbuntu','',system('lsb_release -d',intern=T))}).  Additional software along with version information is listed in the respective method sections and in \textbf{\cref{tab:session_info}}.
+
+\section{Results}
+
+\subsection{Figures}
+
+%--------------------------------------------------------------------------
+% RNA-SEQ FIGURES
+%--------------------------------------------------------------------------
+\Sexpr{knit_child('rseq-00-qc-normalization-figures.Rnw')}
+\Sexpr{knit_child('rseq-01-bias-confounding-effects-figures.Rnw')}
+\Sexpr{knit_child('rseq-02-sdeg-identification-figures.Rnw')}
+\Sexpr{knit_child('rseq-03-sdeg-clusters-figures.Rnw')}
+\Sexpr{knit_child('rseq-04-sdeg-organization-known-modules-figures.Rnw')}
+\newpage
+
+%--------------------------------------------------------------------------
+% PREPROCESSING BENCHMARK FIGURE
+%--------------------------------------------------------------------------
+\FloatBarrier
+\Sexpr{knit_child('pre-processing-benchmark-figures.Rnw')}
+
+\subsection{Tables}
+
+%--------------------------------------------------------------------------
+% RNA-SEQ TABLES
+%--------------------------------------------------------------------------
+\Sexpr{knit_child('rseq-00-qc-normalization-tables.Rnw')}
+\Sexpr{knit_child('rseq-01-bias-confounding-effects-tables.Rnw')}
+\Sexpr{knit_child('rseq-02-sdeg-identification-tables.Rnw')}
+\Sexpr{knit_child('rseq-03-sdeg-clusters-tables.Rnw')}
+\Sexpr{knit_child('rseq-04-sdeg-organization-known-modules-tables.Rnw')}
+
+%--------------------------------------------------------------------------
+% SOFTWARE TABLE
+%--------------------------------------------------------------------------
+\FloatBarrier
+\Sexpr{knit_child('system-software-table.Rnw')}
+
+\FloatBarrier\newpage
+\end{document}

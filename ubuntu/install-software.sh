@@ -1,10 +1,39 @@
 #!/bin/bash
-##############################################################################################
-# Author:   Kevin Conway, Leigh Villarroel
+############################################################################################
+# RSEQREP: RNA-Seq Reports, an open-source cloud-enabled framework for reproducible
+# RNA-Seq data processing, analysis, and result reporting
+# 
+# https://github.com/emmesgit/RSEQREP
+#
+# Copyright (C) 2017 The Emmes Corporation 
+# 
+# This program is free software that contains third party software subject to various licenses, 
+# namely, the GNU General Public License version 3 (or later), the GNU Affero General Public License 
+# version 3 (or later), and the LaTeX Project Public License v.1.3(c). A list of the software contained 
+# in this program, including the applicable licenses, can be accessed here: 
+# 
+# https://github.com/emmesgit/RSEQREP/SOFTWARE.xlsx  
+# 
+# You can redistribute and/or modify this program, including its components, only under the terms of 
+# the applicable license(s).  
+#
+# This program is distributed in the hope that it will be useful, but "as is," WITHOUT ANY WARRANTY; 
+# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+#
+# Program:  install-software.pl 
+# Version:  RSEQREP 1.0.0
+# Author:   Kevin Conway and Leigh Villarroel
 # Purpose:  install software onto 16.0.4 Ubuntu desktop computer required for RSEQREP usage.
 # Input:    N/A
 # Output:   N/A
-##############################################################################################
+############################################################################################
+
+##Add Swap for extra memory if needed 
+sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
+sudo /sbin/mkswap /var/swap.1
+sudo chmod 600 /var/swap.1
+sudo /sbin/swapon /var/swap.1
+
 
 ##Initial setup
 ## emmes_mnt.sh should be run first 
@@ -73,99 +102,12 @@ sudo apt-get -y install liblzma-doc liblzma-dev xz-utils #for samtools/htslib-1.
 sudo apt-get -y install libtbb2 #for bowtie2
 sudo apt-get -y install openjdk-8-jdk #for R 3.4.1
 sudo apt-get -y install mesa-common-dev libglu1-mesa-dev  #R package rgl
-sudo apt-get -y install libdbi-perl #for Ensembl API/ PERL5 
-sudo apt-get -y install libdbd-mysql-perl #for Ensembl API/ PERL5 
+sudo apt-get -y install evince #PDF viewer
 
 
+
+	
 echo gcc and other necessary compiler tools INSTALLED
-
-##EVINCE
-sudo apt-get -y install evince
-
-##OPENSSL
-# create/cd into openssl installation dir
-mydir=/home/ubuntu/emmes_install/openssl_install
-if [ ! -d "$mydir" ]
-then
-	echo creating directory "$mydir"
-	mkdir $mydir
-	if [ ! -d "$mydir" ]
-	then
-		echo cannot create directory "$mydir"
-		echo exiting with error code 1 ...
-		exit 1
-	fi
-fi
-echo cd-ing into directory "$mydir"
-cd "$mydir"
-
-# download openssl binary tarball
-myfile=openssl-1.1.0f.tar.gz
-if [ ! -f "$myfile" ]
-then
-	echo wget-ing file "$myfile"
-	wget https://www.openssl.org/source/openssl-1.1.0f.tar.gz
-	if [ ! -f "$myfile" ]
-	then
-		echo could not wget file "$myfile"
-		echo exiting with error code 1 ...
-		exit 1
-	fi
-fi
-echo ls-ing file "$myfile"
-ls -alh "$myfile"
-
-# unzip openssl binary tarball and build
-mydir=/home/ubuntu/emmes_install/openssl_install/openssl-1.1.0f
-if [ ! -d "$mydir" ]
-then
-	echo unzipping file "$myfile"
-	tar xvfz $myfile
-	if [ ! -d "$mydir" ]
-	then
-		echo cannot unzip "$myfile" to create "$mydir"
-		echo exiting with error code 1 ...
-		exit 1
-	fi
-	
-	cd $mydir
-	#build
-	./config  #./config -Wl,--enable-new-dtags,-rpath,'$(LIBRPATH)'
-	sudo make
-	#make test
-	sudo make install #in /usr/local/ssl/bin/openssl?
-fi
-
-## if necessary, archive original openssl executables in /usr/bin
-## copy new openssl executables from openssl installation dir to /usr/bin
-opensslversioncheck=`/usr/bin/openssl version | grep -o 1\.1\.0f `
-myfile=/usr/bin/orig_openssl
-myfile2=/usr/bin/openssl
-if [ -f "$myfile2" ] && [ "$opensslversioncheck" != "1.1.0f" ] ##exists but not the right version
-then
-	##make copies and copy over executables from current install directory
-	echo openssl version is not 1.1.0f, presumed old
-	echo archiving original openssl executables in /usr/bin
-	
-	sudo mv -v "/usr/bin/openssl" "/usr/bin/orig_openssl"
-	
-	if [ ! -f "$myfile" ]
-	then
-		echo could not archive original bowtie2 executables
-		echo exiting with error code 1 ...
-		exit 1
-	else
-		#move the new openssl version	
-		echo moving openssl executables to /usr/bin
-		sudo mv /usr/local/bin/openssl /usr/bin
-		echo openssl version is at 1.1.0f and INSTALLED
-	fi
-else
-	## openssl should be present and current
-	echo ls-ing files in /usr/bin/
-    ls -alh /usr/bin/openssl
-	echo openssl version is OK at 1.1.0f and INSTALLED
-fi
 
 ##PYTHON
 mypython27=/usr/bin/python2.7
@@ -220,9 +162,31 @@ then
 fi
 echo git INSTALLED
 
-##BOWTIE2
-# create/cd into bowtie installation dir
-mydir=/home/ubuntu/emmes_install/bowtie2_install
+###USER UTILITIES
+##Firefox
+myfirefox=/usr/bin/firefox
+if [ ! -f "$myfirefox" ]
+then
+	sudo apt-get -y install firefox
+fi
+echo firefox INSTALLED
+
+##Libre office
+mylibre=/usr/bin/libreoffice
+if [ ! -f "$mylibre" ]
+then
+	sudo apt-get -y install libreoffice
+fi
+echo libreoffice INSTALLED
+
+##X2GO?
+
+
+###UTILITIES
+##Sqlite
+#wget https://sqlite.org/2017/sqlite-tools-linux-x86-3200100.zip
+# create/cd into sqlite installation dir
+mydir=/home/ubuntu/emmes_install/sqlite_install
 if [ ! -d "$mydir" ]
 then
 	echo creating directory "$mydir"
@@ -237,12 +201,12 @@ fi
 echo cd-ing into directory "$mydir"
 cd "$mydir"
 
-# download bowtie2 binary tarball
-myfile=download # replaced with download to improve readability
+# download sqlite binary tarball
+myfile=sqlite-autoconf-3200100.tar.gz #sqlite-tools-linux-x86-3200100.zip 
 if [ ! -f "$myfile" ]
 then
 	echo wget-ing file "$myfile"
-	wget https://sourceforge.net/projects/bowtie-bio/files/bowtie2/2.3.2/bowtie2-2.3.2-linux-x86_64.zip/download
+	wget https://sqlite.org/2017/$myfile
 	if [ ! -f "$myfile" ]
 	then
 		echo could not wget file "$myfile"
@@ -253,56 +217,92 @@ fi
 echo ls-ing file "$myfile"
 ls -alh "$myfile"
 
-# unzip bowtie2 binary tarball
-mydir=/home/ubuntu/emmes_install/bowtie2_install/bowtie2-2.3.2
+# extract tophat binary tarball
+mydir=/home/ubuntu/emmes_install/sqlite_install/sqlite-autoconf-3200100
 if [ ! -d "$mydir" ]
 then
 	echo unzipping file "$myfile"
-	unzip $myfile
+	tar xvfz $myfile
 	if [ ! -d "$mydir" ]
 	then
-		echo cannot unzip "$myfile" to create "$mydir"
+		echo cannot extract "$myfile" to create "$mydir"
+		echo exiting with error code 1 ...
+		exit 1
+	fi
+ fi
+#configure
+cd $mydir 
+
+myfile=/usr/local/bin/sqlite3
+if [ ! -f "$myfile" ]
+then
+	echo building sqlite
+	./configure 
+	make
+	sudo make install
+	if [ ! -f "$myfile" ]
+	then
+		echo could not build sqlite
 		echo exiting with error code 1 ...
 		exit 1
 	fi
 fi
+echo sqlite3 INSTALLED
 
-## if necessary, archive original bowtie2 executables in /usr/bin
-## copy new bowtie2 executables from bowtie2 installation dir to /usr/bin
-bowtieversioncheck=`/usr/bin/bowtie2 --version | grep -o 2\.3\.2 `
-myfile=/usr/bin/orig_bowtie2
-myfile2=/usr/bin/bowtie2
-if [ ! -f "$myfile2" ] ##doesnt exist
+##SRATOOLKIT
+#wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.8.2-1/sratoolkit.2.8.2-1-ubuntu64.tar.gz
+# create/cd into sqlite installation dir
+mydir=/home/ubuntu/emmes_install/sratoolkit_install
+if [ ! -d "$mydir" ]
 then
-	##copy over executables from current install directory
-	echo copying new bowtie2 executables into /usr/bin
-	sudo cp -a /home/ubuntu/emmes_install/bowtie2_install/bowtie2-2.3.2/bowtie2* /usr/bin/
-		if [ ! -f /usr/bin/bowtie2 ]
-		then
-			echo could not copy new bowtie2 executables to /usr/bin
-			echo exiting with error code 1 ...
-			exit 1
-		fi
-elif [ -f "$myfile2" ] && [ "$bowtieversioncheck" != "2.3.2" ] ##exists but not the right version #failed out here when installed
-then
-	##make copies and copy over executables from current install directory
-	echo bowtie2 version is not 2.3.2, presumed old
-	echo archiving original bowtie2 executables in /usr/bin
-	for file in $(ls /usr/bin/bowtie2*)
-	do
-		sudo mv -v "$file" "/usr/bin/orig_${file##*/}"
-	done
-	if [ ! -f "$myfile" ]
+	echo creating directory "$mydir"
+	mkdir $mydir
+	if [ ! -d "$mydir" ]
 	then
-		echo could not archive original bowtie2 executables
+		echo cannot create directory "$mydir"
 		echo exiting with error code 1 ...
 		exit 1
 	fi
-else
-	## bowtie2 should be present and current
-	echo ls-ing files in /usr/bin/ containing bowtie2
-    ls -alh /usr/bin/*bowtie2*
-	echo bowtie2 version is OK at 2.3.2	and INSTALLED
+fi
+echo cd-ing into directory "$mydir"
+cd "$mydir"
+
+# download sratoolkit binary tarball
+myfile=sratoolkit.2.8.2-1-ubuntu64.tar.gz 
+if [ ! -f "$myfile" ]
+then
+	echo wget-ing file "$myfile"
+	wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.8.2-1/sratoolkit.2.8.2-1-ubuntu64.tar.gz
+	if [ ! -f "$myfile" ]
+	then
+		echo could not wget file "$myfile"
+		echo exiting with error code 1 ...
+		exit 1
+	fi
+fi
+echo ls-ing file "$myfile"
+ls -alh "$myfile"
+
+# extract tophat binary tarball
+mydir=/home/ubuntu/emmes_install/sratoolkit_install/sratoolkit.2.8.2-1-ubuntu64
+if [ ! -d "$mydir" ]
+then
+	echo unzipping file "$myfile"
+	tar xvfz $myfile
+	if [ ! -d "$mydir" ]
+	then
+		echo cannot extract "$myfile" to create "$mydir"
+		echo exiting with error code 1 ...
+		exit 1
+	fi
+ fi
+
+if [ ! -f "/usr/bin/sra-sort.2.8.2" ]
+then
+	cd $mydir/bin/
+	echo copying sratoolkit files to /usr/bin
+	sudo cp -a * /usr/bin/
+	echo sratoolkit is INSTALLED
 fi
 
 ##TOPHAT
@@ -419,10 +419,10 @@ echo cd-ing into directory "$mydir"
 cd "$mydir"
 
 # get STAR via git
-# get the latest version (2.5.3a) 
-# wget https://github.com/alexdobin/STAR/archive/2.5.3a.tar.gz
+# get the latest version (2.5.2a) 
+# wget https://github.com/alexdobin/STAR/archive/2.5.2a.tar.gz
 # download STAR binary tarball
-myfile=2.5.3a.tar.gz
+myfile=2.5.2a.tar.gz
 if [ ! -f "$myfile" ]
 then
 	echo wget-ing file "$myfile"
@@ -438,7 +438,7 @@ echo ls-ing file "$myfile"
 ls -alh "$myfile"
 
 # extract STAR binary tarball
-mydir=/home/ubuntu/emmes_install/star_install/STAR-2.5.3a
+mydir=/home/ubuntu/emmes_install/star_install/STAR-2.5.2a
 if [ ! -d "$mydir" ]
 then
 	echo unzipping file "$myfile"
@@ -467,16 +467,16 @@ then
 	fi
 fi
 #Verify
-$mybinfile --version | grep 2\.5\.3a && (
-   echo STAR version in /usr/bin is OK and INSTALLED at 2.5.3a
+$mybinfile --version | grep 2\.5\.2a && (
+   echo STAR version in /usr/bin is OK and INSTALLED at 2.5.2a
 )
 
-$mybinfile --version | grep 2\.5\.3a || (
-   echo STAR version in /usr/bin is not 2.5.3a
+$mybinfile --version | grep 2\.5\.2a || (
+   echo STAR version in /usr/bin is not 2.5.2a
    echo installing executable obtained via git
    sudo cp -a $myfile $mybinfile
-   $mybinfile --version | grep 2\.5\.3a || (
-         echo could not install STAR version 2.5.3a
+   $mybinfile --version | grep 2\.5\.2a || (
+         echo could not install STAR version 2.5.2a
          echo exiting with error code 1 ...
          exit 1
    )
@@ -548,7 +548,6 @@ if [ ! -f "$myfile" ]
       fi
 	##run the install using sudo apt install samtools
 	#echo running apt to install SAMtools
-	#sudo apt install samtools
 	
 	##move the samtools executable to /usr/bin
 	
@@ -716,7 +715,7 @@ myfile=subread-1.5.3-Linux-x86_64.tar.gz
 if [ ! -f "$myfile" ]
 then
 	echo wget-ing file "$myfile"
-	wget https://sourceforge.net/projects/subread/files/subread-1.5.3/$myfile
+	wget https://downloads.sourceforge.net/project/subread/subread-1.5.3/$myfile
 	if [ ! -f "$myfile" ]
 	then
 		echo could not wget file "$myfile"
@@ -990,12 +989,12 @@ fi
 echo ls-ing file "$myfile"
 ls -alh "$myfile"
 
-cat $myfile | grep 1\.2-r101-dirty && (
-   echo seqtk version obtained via git is OK at 1.2-r101-dirty
+cat $myfile | grep 1\.2-r94 && (
+   echo seqtk version obtained via git is OK at 1.2-r94
 )
 
-cat $myfile | grep 1\.2-r101-dirty || (
-   echo seqtk version obtained via git is not 1.2-r101-dirty
+cat $myfile | grep 1\.2-r94 || (
+   echo seqtk version obtained via git is not 1.2-r94
    echo exiting with error code 1 ...
    exit 1
 )
@@ -1030,16 +1029,16 @@ if [ ! -f $mybinfile ]
    fi
 fi
 
-$mybinfile 2>&1 | grep 1\.2-r101-dirty && (
-   echo seqtk version in /usr/bin is OK at 1.2-r101-dirty
+$mybinfile 2>&1 | grep 1\.2-r94 && (
+   echo seqtk version in /usr/bin is OK at 1.2-r94
 )
 
-$mybinfile 2>&1 | grep 1\.2-r101-dirty || (
-   echo seqtk version in /usr/bin is not 1.2-r101-dirty
+$mybinfile 2>&1 | grep 1\.2-r94 || (
+   echo seqtk version in /usr/bin is not 1.2-r94
    echo installing executable obtained via git
    sudo cp -a $myfile $mybinfile
-   $mybinfile  2>&1 | grep 1\.2-r101-dirty || (
-         echo could not install seqtk version 1.2-r101-dirty
+   $mybinfile  2>&1 | grep 1\.2-r94 || (
+         echo could not install seqtk version 1.2-r94
          echo exiting with error code 1 ...
          exit 1
    )
@@ -1069,10 +1068,10 @@ else
 	 )
 	 /usr/bin/pip --help | grep "Search PyPI" && (
 		echo pip is installed, proceed with installation of aws cli
-		sudo pip install awscli
-	#           make aws help generally available
+		sudo pip install awscli==1.10.48
+	# make aws help generally available
 		sudo chmod o+r /usr/local/lib/python2.7/dist-packages/RSeQC-2.6.3-py2.7-linux-x86_64.egg/EGG-INFO/top_level.txt
-	#           resolve permissions issue encountered by Travis
+	# resolve permissions issue encountered by Travis
 		sudo chmod o+r /usr/local/lib/python2.7/dist-packages/RSeQC-2.6.3-py2.7-linux-x86_64.egg/EGG-INFO/requires.txt
 		if [ ! -f "$myfile" ]
 		   then
@@ -1086,7 +1085,7 @@ fi
 echo awscli is INSTALLED
 
 ##install fastx_toolkit
- 
+
 # create/cd into fastx_toolkit installation dir
 mydir=/home/ubuntu/emmes_install/fastx_toolkit_install
 if [ ! -d "$mydir" ]
@@ -1216,7 +1215,7 @@ myfile=hisat2-2.1.0-Linux_x86_64.zip
 if [ ! -f "$myfile" ]
 then
 	echo wget-ing file "$myfile"
-	wget ftp://ftp.ccb.jhu.edu/pub/infphilo/hisat2/downloads/hisat2-2.1.0-Linux_x86_64.zip
+	wget ftp://ftp.ccb.jhu.edu/pub/infphilo/hisat2/downloads/$myfile
 	if [ ! -f "$myfile" ]
 	then
 		echo could not wget file "$myfile"
@@ -1368,161 +1367,6 @@ $mybinfile --help 2>&1 | grep 2\.0\.2 || (
    )
 )
 echo htop is INSTALLED
-
-##INSTALL cutadapt (1.14)
-myfile=/usr/local/lib/python2.7/dist-packages/cutadapt
-if [ -d "$myfile" ]
-then
-	echo cutadapt is already installed
-else
-	sudo pip install cutadapt==1.14
-	if [ ! -d "$myfile" ]
-	then
-	   echo could not install cutadapt
-	   exit 1
-	fi
-fi
-echo cutadapt INSTALLED
-
-##INSTALL Ensembl Perl API
-#Needs
-#wget ftp://ftp.ensembl.org/pub/ensembl-api.tar.gz
-#wget https://cpan.metacpan.org/authors/id/C/CJ/CJFIELDS/BioPerl-1.6.1.tar.gz 
-# create/cd into htop installation dir
-mydir=/home/ubuntu/emmes_install/ensembl_install
-if [ ! -d "$mydir" ]
-then
-	echo creating directory "$mydir"
-	mkdir $mydir
-	if [ ! -d "$mydir" ]
-	then
-		echo cannot create directory "$mydir"
-		echo exiting with error code 1 ...
-		exit 1
-	fi
-fi
-echo cd-ing into directory "$mydir"
-cd "$mydir"
-# get and extract files
-#wget https://cpan.metacpan.org/authors/id/C/CJ/CJFIELDS/BioPerl-1.6.1.tar.gz 
-
-myfile=BioPerl-1.6.1.tar.gz 
-if [ ! -f "$myfile" ]
-then
-	echo wget-ing file "$myfile"
-	wget wget https://cpan.metacpan.org/authors/id/C/CJ/CJFIELDS/$myfile
-	if [ ! -f "$myfile" ]
-	then
-		echo could not wget file "$myfile"
-		echo exiting with error code 1 ...
-		exit 1
-	fi
-fi
-echo ls-ing file "$myfile"
-ls -alh "$myfile"
-echo unzipping file "$myfile"
-tar xvzf $myfile
-
-#wget ftp://ftp.ensembl.org/pub/ensembl-api.tar.gz
-myfile=ensembl-api.tar.gz
-if [ ! -f "$myfile" ]
-then
-	echo wget-ing file "$myfile"
-	wget wget ftp://ftp.ensembl.org/pub/$myfile
-	if [ ! -f "$myfile" ]
-	then
-		echo could not wget file "$myfile"
-		echo exiting with error code 1 ...
-		exit 1
-	fi
-fi
-echo ls-ing file "$myfile"
-ls -alh "$myfile"
-echo unzipping file "$myfile"
-tar xvzf $myfile
-
-#Check 
-#mydir=/home/ubuntu/emmes_install/ensembl_install/ensembl
-
-# Manage the ensembl files now
-#jump to local file directory where files will be stored
-cd "/usr/local/emmes"
-
-# Copy all directories extracted to /usr/local/emmes/ and add stuff
-echo copying new ensembl directories into /usr/local/emmes
-for myotheritem in BioPerl-1.6.1 ensembl ensembl-compara ensembl-funcgen ensembl-io ensembl-tools ensembl-variation
-do 
-	sudo cp -a /home/ubuntu/emmes_install/ensembl_install/$myotheritem /usr/local/emmes
-	
-	#add file locations to PERL5LIB using PWD variable
-	#PERL5LIB=${PERL5LIB}:${PWD}/$myotheritem	
-done
-
-#export variable
-PERL5LIB=${PERL5LIB}:${PWD}/bioperl-1.6.1
-PERL5LIB=${PERL5LIB}:${PWD}/ensembl/modules
-PERL5LIB=${PERL5LIB}:${PWD}/ensembl-compara/modules
-PERL5LIB=${PERL5LIB}:${PWD}/ensembl-variation/modules
-PERL5LIB=${PERL5LIB}:${PWD}/ensembl-funcgen/modules
-PERL5LIB=${PERL5LIB}:${PWD}/ensembl-io/modules
-PERL5LIB=${PERL5LIB}:${PWD}/ensembl-tools/modules
-export PERL5LIB #need to make this persistent
-
-
-
-#sudo chmod ugo+x /usr/bin/STAR
-echo ensembl version is INSTALLED
-
-
-##INSTALL DSRC
-# wget http://sun.aei.polsl.pl/REFRESH/dsrc/downloads/2.0rc2/linux/dsrc
-
-mydir=/home/ubuntu/emmes_install/dsrc_install
-if [ ! -d "$mydir" ]
-then
-	echo creating directory "$mydir"
-	mkdir $mydir
-	if [ ! -d "$mydir" ]
-	then
-		echo cannot create directory "$mydir"
-		echo exiting with error code 1 ...
-		exit 1
-	fi
-fi
-echo cd-ing into directory "$mydir"
-cd "$mydir"
-
-myfile=dsrc
-if [ ! -f "$myfile" ]
-then
-	echo wget-ing file "$myfile"
-	wget wget http://sun.aei.polsl.pl/REFRESH/dsrc/downloads/2.0rc2/linux/$myfile
-	if [ ! -f "$myfile" ]
-	then
-		echo could not wget file "$myfile"
-		echo exiting with error code 1 ...
-		exit 1
-	fi
-fi
-
-##fix permissions and copy file to bin
-sudo chmod ugo+x $myfile
-
-# install DSRC binary
-mybinfile=/usr/bin/dsrc
-if [ ! -f $mybinfile ]
-then
-	sudo cp -a $myfile /usr/bin #copies all DSRC files in the above location to bin
-	if [ ! -f "$mybinfile" ]
-	then
-		echo could not install "$mybinfile"
-		echo exiting with error code 1 ...
-		exit 1
-	fi
-fi
-
-echo DSRC executable is INSTALLED
-
 
 ##INSTALL R (r-base)
 
@@ -1893,8 +1737,6 @@ fi
 echo R package knitr INSTALLED
 
 # install car in R
-##strange memory issue being seen trying to install one of the dependencies for car (RcppEigen)
-##resolution involves adding swap memory
 myfile=/usr/local/lib/R/library/car/DESCRIPTION
 if [ -f "$myfile" ]
 then
@@ -1902,22 +1744,12 @@ then
 else
 	echo installing package car in R
 	#install.packages("RcppEigen", repos = "http://cran.us.r-project.org")
-	#echo install.packages\(\"RcppEigen\"\, repos \= \"http\://cran.us.r\-project.org\"\) > install_car.R
-	#echo install.packages\(\"car\"\, repos \= \"http\://cran.us.r\-project.org\"\) > install_car.R
-	#cat install_car.R
-	#sudo R CMD BATCH install_car.R
-	#cat install_car.Rout
-	#rm --interactive=never install_car.R install_car.Rout
-	
-	##to install specific package
-	echo installing package car in R using devtools
-	echo require\(devtools\) > install_car.R
-	echo install_version\(\"car\"\, version \= \"2\.1\-5\"\, repos \= \"http\://cran.us.r\-project.org\"\, quiet \= F\) >> install_car.R
+	echo install.packages\(\"RcppEigen\"\, repos \= \"http\://cran.us.r\-project.org\"\) > install_car.R
+	echo install.packages\(\"car\"\, repos \= \"http\://cran.us.r\-project.org\"\) > install_car.R
 	cat install_car.R
 	sudo R CMD BATCH install_car.R
 	cat install_car.Rout
 	rm --interactive=never install_car.R install_car.Rout
-	
 fi
 echo R package car INSTALLED
 
@@ -2111,6 +1943,53 @@ else
 	fi
 fi
 echo networkx INSTALLED
+
+# install pysam 0.12.0.1
+##sudo pip install pysam
+myfile=/usr/local/lib/python2.7/dist-packages/pysam
+if [ -d "$myfile" ]
+then
+	echo pysam is already installed
+else
+	sudo pip install pysam
+	#     make aws help generally available
+	#      sudo chmod o+r /usr/local/lib/python2.7/dist-packages/RSeQC-2.6.3-py2.7-linux-x86_64.egg/EGG-INFO/top_level.txt
+	#     resolve permissions issue encountered by Travis
+	#      sudo chmod o+r /usr/local/lib/python2.7/dist-packages/RSeQC-2.6.3-py2.7-linux-x86_64.egg/EGG-INFO/requires.txt
+	if [ ! -d "$myfile" ]
+	then
+	   echo could not install pysam
+	   exit 1
+	fi
+fi
+echo pysam INSTALLED
+
+# install cython
+##sudo pip install cython 0.27
+myfile=/usr/local/lib/python2.7/dist-packages/cython
+if [ -d "$myfile" ]
+then
+	echo cython is already installed
+else
+	sudo pip install cython
+	#     make aws help generally available
+	#      sudo chmod o+r /usr/local/lib/python2.7/dist-packages/RSeQC-2.6.3-py2.7-linux-x86_64.egg/EGG-INFO/top_level.txt
+	#     resolve permissions issue encountered by Travis
+	#      sudo chmod o+r /usr/local/lib/python2.7/dist-packages/RSeQC-2.6.3-py2.7-linux-x86_64.egg/EGG-INFO/requires.txt
+	if [ ! -d "$myfile" ]
+	then
+	   echo could not install cython
+	   exit 1
+	fi
+fi
+echo cython INSTALLED
+
+##CLEANUP
+
+#Remove swap
+sudo /sbin/swapoff /var/swap.1
+sudo rm -f /var/swap.1
+
 
 echo Script Completed.
 ##end of script 

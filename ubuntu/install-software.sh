@@ -20,6 +20,8 @@
 # This program is distributed in the hope that it will be useful, but "as is," WITHOUT ANY WARRANTY; 
 # without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 #
+# To cite this software, please reference doi:10.12688/f1000research.10464.1
+#
 # Program:  install-software.pl 
 # Version:  RSEQREP 1.0.0
 # Author:   Kevin Conway and Leigh Villarroel

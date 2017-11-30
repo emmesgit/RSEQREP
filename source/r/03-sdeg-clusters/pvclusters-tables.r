@@ -16,6 +16,8 @@
 # You can redistribute and/or modify this program, including its components, only under the terms of 
 # the applicable license(s).  
 #
+# To cite this software, please reference doi:10.12688/f1000research.10464.1
+#
 # This program is distributed in the hope that it will be useful, but "as is," WITHOUT ANY WARRANTY; 
 # without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 #

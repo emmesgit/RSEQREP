@@ -128,7 +128,7 @@ if(length(postb.times) > 1) {
 							}
 							mtext( side = 3, text=paste(spcLabl,', ',postb.timel,sep=''), cex=0.49 ,line=1.5); ## add subtitle
 							
-							trtCols = unique(mta.lfc$trtc[order(mta.lfc$trt),])
+							trtCols = unique(mta.lfc$trtc[order(mta.lfc$trt)])
 							for (l in 1:nrow(y.avg.trt)) {
 								## average over genes
 								points(x=postb.times,y=y.avg.trt[l,],col=trtCols[l],pch=20,cex=0.8)

@@ -133,15 +133,16 @@ for(v in 1:length(varFlags)) {
 		res = as.data.frame(matrix(nrow=length(var.sel),ncol=0),stringsAsFactors=F);
 		
 		res$min =   round(apply(mta.spc[,cols],2,min),2);
-		res$max =   round(apply(mta.spc[,cols],2,max),2);
+		res$q1=     round(apply(mta.spc[,cols],2,quantile,0.25),2);
 		res$median= round(apply(mta.spc[,cols],2,median),2);
 		res$mean=   round(apply(mta.spc[,cols],2,mean),2);
-		res$q1=     round(apply(mta.spc[,cols],2,quantile,0.25),2);
 		res$q3=     round(apply(mta.spc[,cols],2,quantile,0.75),2);
+		res$max =   round(apply(mta.spc[,cols],2,max),2);
 		res$sd=     round(apply(mta.spc[,cols],2,sd),2);
 		res$mad=    round(apply(mta.spc[,cols],2,mad),2);
 		res$n=      nrow(mta.spc)
 		
+		res = res[,c('min','q1','median','mean','q3','max','sd','mad','n')]
 		colnames(res) = c('Min','Q1','Median','Mean','Q3','Max','SD','MAD','N');
 		rownames(res) =  lab.sel; 
 		

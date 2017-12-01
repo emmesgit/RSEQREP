@@ -89,36 +89,35 @@ if (length(trtFlags) >= 2) {
 			}
 			
 			## Print Up regulated diagram
-				matrx.up = as.data.frame(apply(matrx,2,function(x)(as.numeric(gsub('-1','0',x)))),stringsAsFactors=F)
-				matrx.up = matrx.up[!rowSums(matrx.up)==0,]
-				colnames(matrx.up) = paste(spcLabls,' (',colSums(abs(matrx.up)),')',sep='')
-				if (length(which(colSums(matrx.up)>0))>1) {
-					matrx.up = matrx.up[,colSums(matrx.up)!=0]
-					vps = append(vps,list(grid.grabExpr(c(
-						upset(matrx.up,mainbar.y.label='SDEG Intersection Size',sets.x.label='SDEG Set Size',mainbar.y.max=ceiling(max(table(apply(abs(matrx.up),1,paste,collapse=';')))*1.2),
-									matrix.color=lfc.cols[3],main.bar.color=lfc.cols[3],sets.bar.color=lfc.cols[3],sets=colnames(matrx.up),keep.order=T,order.by="freq"),
-								grid.rect(width = .98, height = .98, gp = gpar(lwd = 2, col = "black")),
-								grid.text(paste(spcLabl,', ',timel,'\n(Up-regulated DE genes)',sep=''),x = unit(0.68, "npc"), y = unit(0.96, "npc"),gp=gpar(font=2,cex=1),just='top'),
-								grid.edit('arrange',name='arrange2')))))
-				} else {
-					vps = append(vps,list(grid.grabExpr(grid.rect(width = .98, height = .98, gp = gpar(lwd = 2, col = "white")))))
-				}
-				
-				## Print Down regulated diagram
-				matrx.down = as.data.frame(apply(matrx,2,function(x)(as.numeric(gsub('^1$','0',x)))),stringsAsFactors=F)
-				matrx.down = abs(matrx.down[!rowSums(matrx.down)==0,])
-				colnames(matrx.down) = paste(spcLabls,' (',colSums(abs(matrx.down)),')',sep='')
-				if (length(which(colSums(matrx.down)>0))>1) {
-					matrx.down = matrx.down[,colSums(matrx.down)!=0]
-					vps = append(vps,list(grid.grabExpr(c(
-						upset(matrx.down,mainbar.y.label='SDEG Intersection Size',sets.x.label='SDEG Set Size',mainbar.y.max=ceiling(max(table(apply(abs(matrx.down),1,paste,collapse=';')))*1.2),
-									matrix.color=lfc.cols[1],main.bar.color=lfc.cols[1],sets.bar.color=lfc.cols[1],sets=colnames(matrx.down),keep.order=T,order.by="freq"),
-								grid.rect(width = .98, height = .98, gp = gpar(lwd = 2, col = "black")),
-								grid.text(paste(spcLabl,', ',timel,'\n(Down-regulated DE genes)',sep=''),x = unit(0.68, "npc"), y = unit(0.96, "npc"),gp=gpar(font=2,cex=1),just='top'),
-								grid.edit('arrange',name='arrange2')))))
-				} else {
-					vps = append(vps,list(grid.grabExpr(grid.rect(width = .98, height = .98, gp = gpar(lwd = 2, col = "white")))))
-				}
+			matrx.up = as.data.frame(apply(matrx,2,function(x)(as.numeric(gsub('-1','0',x)))),stringsAsFactors=F)
+			matrx.up = matrx.up[!rowSums(matrx.up)==0,]
+			colnames(matrx.up) = paste(spcLabls,' (',colSums(abs(matrx.up)),')',sep='')
+			if (length(which(colSums(matrx.up)>0))>1) {
+				matrx.up = matrx.up[,colSums(matrx.up)!=0]
+				vps = append(vps,list(grid.grabExpr(c(
+					upset(matrx.up,mainbar.y.label='SDEG Intersection Size',sets.x.label='SDEG Set Size',mainbar.y.max=ceiling(max(table(apply(abs(matrx.up),1,paste,collapse=';')))*1.2),
+								matrix.color=lfc.cols[3],main.bar.color=lfc.cols[3],sets.bar.color=lfc.cols[3],sets=colnames(matrx.up),keep.order=T,order.by="freq"),
+							grid.rect(width = .98, height = .98, gp = gpar(lwd = 2, col = "black")),
+							grid.text(paste(spcLabl,', ',timel,'\n(Up-regulated DE genes)',sep=''),x = unit(0.68, "npc"), y = unit(0.96, "npc"),gp=gpar(font=2,cex=1),just='top'),
+							grid.edit('arrange',name='arrange2')))))
+			} else {
+				vps = append(vps,list(grid.grabExpr(grid.rect(width = .98, height = .98, gp = gpar(lwd = 2, col = "white")))))
+			}
+			
+			## Print Down regulated diagram
+			matrx.down = as.data.frame(apply(matrx,2,function(x)(as.numeric(gsub('^1$','0',x)))),stringsAsFactors=F)
+			matrx.down = abs(matrx.down[!rowSums(matrx.down)==0,])
+			colnames(matrx.down) = paste(spcLabls,' (',colSums(abs(matrx.down)),')',sep='')
+			if (length(which(colSums(matrx.down)>0))>1) {
+				matrx.down = matrx.down[,colSums(matrx.down)!=0]
+				vps = append(vps,list(grid.grabExpr(c(
+					upset(matrx.down,mainbar.y.label='SDEG Intersection Size',sets.x.label='SDEG Set Size',mainbar.y.max=ceiling(max(table(apply(abs(matrx.down),1,paste,collapse=';')))*1.2),
+								matrix.color=lfc.cols[1],main.bar.color=lfc.cols[1],sets.bar.color=lfc.cols[1],sets=colnames(matrx.down),keep.order=T,order.by="freq"),
+							grid.rect(width = .98, height = .98, gp = gpar(lwd = 2, col = "black")),
+							grid.text(paste(spcLabl,', ',timel,'\n(Down-regulated DE genes)',sep=''),x = unit(0.68, "npc"), y = unit(0.96, "npc"),gp=gpar(font=2,cex=1),just='top'),
+							grid.edit('arrange',name='arrange2')))))
+			} else {
+				vps = append(vps,list(grid.grabExpr(grid.rect(width = .98, height = .98, gp = gpar(lwd = 2, col = "white")))))
 			}
 		}
 		

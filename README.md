@@ -34,16 +34,16 @@ https://github.com/emmesgit/RSEQREP/issues
 For a detailed explanation of the software and its capabilities please navigate to our F1000 research publication:
 https://f1000research.com/articles/6-2162/v1
 
-##RELEASE NOTES 
+## RELEASE NOTES 
 
-###RSEQREP RNA-Seq Reports - Version 1.1.0
+### RSEQREP RNA-Seq Reports - Version 1.1.0
 
-####New Features:
+#### New Features:
 
 * The run-*.sh scripts can now be executed from anywhere on the file system.
 * The download gene sets shell script (RSEQREP/source/shell/download-gene-sets.sh) was updated to support command line arguments for selectively download Blood Transcription Modules (option btm), Reactome pathways (reactome option), and KEGG pathways (kegg option). Note for the KEGG option you need to either be an academic user or have a commercial KEGG license (http://www.kegg.jp/kegg/rest).
 
-####Bug Fixes:
+#### Bug Fixes:
 
 * SRA file download was switched from FTP URLs to use fastq-dump, a program that is as part of the SRA toolkit.
 * Quotation of fields (double quotes) in .csv files for pre-processing steps generated when running RSEQREP/source/r/parse-rnaseq-configuration.r was removed.
@@ -51,7 +51,7 @@ https://f1000research.com/articles/6-2162/v1
 * UpSet plots were not showing data if there was an equal number of up and down-regulated DE genes for a particular specimen type, treatment group, or timepoint.
 * Two hidden line breaks were repaired in the Henn et.al. configuration file under case-study/config-henn.xlsx.
 
-###RSEQREP RNA-Seq Reports - Version 1.0.0
+### RSEQREP RNA-Seq Reports - Version 1.0.0
 
 * Initial release.
 

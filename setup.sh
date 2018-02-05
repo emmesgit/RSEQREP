@@ -20,10 +20,10 @@
 # This program is distributed in the hope that it will be useful, but "as is," WITHOUT ANY WARRANTY; 
 # without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #
-# To cite this software, please reference doi:10.12688/f1000research.10464.1
+# To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  setup.sh
-# Version:  RSEQREP 1.0.0
+# Version:  RSEQREP 1.1.0
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  script to run setup only steps (R script to run sanity checks on configuration, 
 #				download genome/transcriptome, format GMT files, and parse configuration)
@@ -32,11 +32,10 @@
 #############################################################################################################
 
 ## Point to config file
-CONFIG=config/config.xlsx
+CONFIG="$(cd `dirname $0` && pwd)/config/config.xlsx"
 
 ## Locate Source Directory from root
-CUR=`pwd`;
-SRCDIR="${CUR}/source";
+SRCDIR="$(cd `dirname $0` && pwd)/source";
 
 #################
 ##

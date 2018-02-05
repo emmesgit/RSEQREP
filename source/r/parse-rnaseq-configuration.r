@@ -19,10 +19,10 @@
 # This program is distributed in the hope that it will be useful, but "as is," WITHOUT ANY WARRANTY; 
 # without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 #
-# To cite this software, please reference doi:10.12688/f1000research.10464.1
+# To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  parse-rnaseq-configuration.r
-# Version:  RSEQREP 1.0.0
+# Version:  RSEQREP 1.1.0
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Run sanity checks on configuration, create GMT formatted gene sets, download genome/transcriptome
 #				parse workflow and analysis configurations, create work space directories.
@@ -68,9 +68,6 @@ ensembl.version = workflow.config$Value[workflow.config$Name=='ensembl_version']
 base.dir = dirname(analysis.config$Value[analysis.config$Name=='report_dir'])
 gmt.files = unlist(str_split(workflow.config$Value[workflow.config$Name=='gmt_entrez_files'],';'))
 aws.s3.fq.files = c(metadata$fastq_file_1[grep('^s3://',metadata$fastq_file_1)],metadata$fastq_file_2[grep('^s3://',metadata$fastq_file_2)])
-sra.files = c(metadata$fastq_file_1[grep('sra$',metadata$fastq_file_1)],metadata$fastq_file_2[grep('sra$',metadata$fastq_file_2)])
-local.fq.files = as.vector(na.omit(c(metadata$fastq_file_1[grep('^s3://|sra$',metadata$fastq_file_1,invert=T)],
-		metadata$fastq_file_2[grep('^s3://',metadata$fastq_file_2,invert=T)])))
 rseqc.progs = paste(workflow.config$Value[workflow.config$Name=='rseqc_dir'],
 		c('bam_stat.py','junction_annotation.py','read_distribution.py','read_GC.py'),sep='/')
 aws.prog = workflow.config$Value[workflow.config$Name=='aws_prog']
@@ -107,15 +104,6 @@ if (!dir.exists(base.dir)) {
 	q(status=25,save='no')
 }
 
-## ensure all local infiles exist
-files = c(gmt.files,local.fq.files)
-for (i in 1:length(files)) {
-	if(!file.exists(files[i])) {
-		cat(paste('File does not exist!',files[i],'\n'))
-		q(status=25,save='no')
-	}
-}
-
 ## ensure all AWS S3 keys exist
 if (length(aws.s3.fq.files)>0) {
 	for (i in 1:length(aws.s3.fq.files)) {
@@ -123,18 +111,6 @@ if (length(aws.s3.fq.files)>0) {
 		sys.res = system(paste(aws.prog,'s3 cp --dryrun',aws.s3.fq.files[i],"./"),intern=T)
 		if(length(grep('error',sys.res)) > 0) {
 			cat(paste('Amazon S3 key does not exist!',aws.s3.fq.files[i],'\n'))
-			q(status=25,save='no')
-		}
-	}
-}
-
-## ensure all sra files exist
-if (length(sra.files)>0) {
-	for (i in 1:length(sra.files)) {
-		## perform dryrun and check for errors -- System call will kill the program with error to STDERR if there is an error.
-		sys.res =  system(paste('curl -s --head --fail "',sra.files[i],'"',sep=''),intern=T)
-		if(length(grep('file does not exist',sys.res)) > 0) {
-			cat(paste('SRA file does not exist!',sra.files[i],'\n'))
 			q(status=25,save='no')
 		}
 	}
@@ -169,51 +145,51 @@ pre.dir = workflow.config$Value[workflow.config$Name=='pre_dir']
 ## create results/preprocessing heirarchy
 if(!dir.exists(pre.dir)) {
 	system(paste('mkdir',pre.dir))
-	if(!dir.exists(paste(pre.dir,'genome',sep='/'))) {
-		system(paste('mkdir',paste(pre.dir,'genome',sep='/')))
-	}
-	if(!dir.exists(paste(pre.dir,'annot',sep='/'))) {
-		system(paste('mkdir',paste(pre.dir,'annot',sep='/')))
-	}
+}
+if(!dir.exists(paste(pre.dir,'genome',sep='/'))) {
+	system(paste('mkdir',paste(pre.dir,'genome',sep='/')))
+}
+if(!dir.exists(paste(pre.dir,'annot',sep='/'))) {
+	system(paste('mkdir',paste(pre.dir,'annot',sep='/')))
 }
 if(!dir.exists(results.dir)) {
 	system(paste('mkdir',results.dir))
-	if(!dir.exists(paste(results.dir,'data',sep='/'))) {
-		system(paste('mkdir',paste(results.dir,'data',sep='/')))
-	}
-	if(!dir.exists(paste(results.dir,'data/annot',sep='/'))) {
-		system(paste('mkdir',paste(results.dir,'data/annot',sep='/')))
-	}
-	if(!dir.exists(paste(results.dir,'data/gene_sets',sep='/'))) {
-		system(paste('mkdir',paste(results.dir,'data/gene_sets',sep='/')))
-	}
-	if(!dir.exists(paste(results.dir,'analysis',sep='/'))) {
-		system(paste('mkdir',paste(results.dir,'analysis',sep='/')))
-	}
-	if(!dir.exists(paste(results.dir,'analysis/lcpm',sep='/'))) {
-		system(paste('mkdir',paste(results.dir,'analysis/lcpm',sep='/')))
-	}
-	if(!dir.exists(paste(results.dir,'analysis/lcpm_fc',sep='/'))) {
-		system(paste('mkdir',paste(results.dir,'analysis/lcpm_fc',sep='/')))
-	}
-	if(!dir.exists(paste(results.dir,'analysis/dist',sep='/'))) {
-		system(paste('mkdir',paste(results.dir,'analysis/dist',sep='/')))
-	}
-	if(!dir.exists(paste(results.dir,'analysis/pca',sep='/'))) {
-		system(paste('mkdir',paste(results.dir,'analysis/pca',sep='/')))
-	}
-	if(!dir.exists(paste(results.dir,'analysis/glm',sep='/'))) {
-		system(paste('mkdir',paste(results.dir,'analysis/glm',sep='/')))
-	}
-	if(!dir.exists(paste(results.dir,'analysis/gsea',sep='/'))) {
-		system(paste('mkdir',paste(results.dir,'analysis/gsea',sep='/')))
-	}
-	if(!dir.exists(paste(results.dir,'analysis/pvclust',sep='/'))) {
-		system(paste('mkdir',paste(results.dir,'analysis/pvclust',sep='/')))
-	}
-	if(!dir.exists(paste(results.dir,'report',sep='/'))) {
-		system(paste('mkdir',paste(results.dir,'report',sep='/')))
-	}
+}
+if(!dir.exists(paste(results.dir,'data',sep='/'))) {
+	system(paste('mkdir',paste(results.dir,'data',sep='/')))
+}
+if(!dir.exists(paste(results.dir,'data/annot',sep='/'))) {
+	system(paste('mkdir',paste(results.dir,'data/annot',sep='/')))
+}
+if(!dir.exists(paste(results.dir,'data/gene_sets',sep='/'))) {
+	system(paste('mkdir',paste(results.dir,'data/gene_sets',sep='/')))
+}
+if(!dir.exists(paste(results.dir,'analysis',sep='/'))) {
+	system(paste('mkdir',paste(results.dir,'analysis',sep='/')))
+}
+if(!dir.exists(paste(results.dir,'analysis/lcpm',sep='/'))) {
+	system(paste('mkdir',paste(results.dir,'analysis/lcpm',sep='/')))
+}
+if(!dir.exists(paste(results.dir,'analysis/lcpm_fc',sep='/'))) {
+	system(paste('mkdir',paste(results.dir,'analysis/lcpm_fc',sep='/')))
+}
+if(!dir.exists(paste(results.dir,'analysis/dist',sep='/'))) {
+	system(paste('mkdir',paste(results.dir,'analysis/dist',sep='/')))
+}
+if(!dir.exists(paste(results.dir,'analysis/pca',sep='/'))) {
+	system(paste('mkdir',paste(results.dir,'analysis/pca',sep='/')))
+}
+if(!dir.exists(paste(results.dir,'analysis/glm',sep='/'))) {
+	system(paste('mkdir',paste(results.dir,'analysis/glm',sep='/')))
+}
+if(!dir.exists(paste(results.dir,'analysis/gsea',sep='/'))) {
+	system(paste('mkdir',paste(results.dir,'analysis/gsea',sep='/')))
+}
+if(!dir.exists(paste(results.dir,'analysis/pvclust',sep='/'))) {
+	system(paste('mkdir',paste(results.dir,'analysis/pvclust',sep='/')))
+}
+if(!dir.exists(paste(results.dir,'report',sep='/'))) {
+	system(paste('mkdir',paste(results.dir,'report',sep='/')))
 }
 
 ## add ensembl version to analysis variables
@@ -237,7 +213,7 @@ write.table(analysis.config,paste(results.dir,'data/analysis_config.csv',sep='/'
 
 ## write CSV formatted metadata file
 cat('Parsing Sample Metadata\n')
-write.table(metadata,paste(pre.dir,'sample_metadata.csv',sep='/'),na='',sep=',',quote=T,row.names=F)
+write.table(metadata,paste(pre.dir,'sample_metadata.csv',sep='/'),na='',sep=',',quote=F,row.names=F)
 
 ############################
 #
@@ -356,9 +332,9 @@ workflow.config = rbind(workflow.config,c('gtf_file',gtf.file))
 workflow.config = rbind(workflow.config,c('bed_file',bed.file))
 
 ## write Workflow configuration CSV formatted file
-write.table(workflow.config,paste(pre.dir,'preprocess_config.csv',sep='/'),sep=',',quote=T,row.names=F,col.names=F)
+write.table(workflow.config,paste(pre.dir,'preprocess_config.csv',sep='/'),sep=',',quote=F,row.names=F,col.names=F)
 
 ## write tmp file for use by the perl pre_processing call
 ## workflow directory,analysis directory,workflow configuration, and sample_metadata csv
 tmp.dta = c(workflow.config[workflow.config$Name=='pre_dir','Value'],analysis.config[analysis.config$Name=='report_dir','Value'],paste(pre.dir,'preprocess_config.csv',sep='/'),paste(pre.dir,'sample_metadata.csv',sep='/'))
-write.table(tmp.dta,'dir.csv',sep=',',quote=F,row.names=F,col.names=F)
+write.table(tmp.dta,paste(source.dir,'/../dir.csv',sep=''),sep=',',quote=F,row.names=F,col.names=F)

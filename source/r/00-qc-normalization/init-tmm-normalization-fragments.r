@@ -19,10 +19,10 @@
 # This program is distributed in the hope that it will be useful, but "as is," WITHOUT ANY WARRANTY; 
 # without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 #
-# To cite this software, please reference doi:10.12688/f1000research.10464.1
+# To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  init-tmm-normalization-fragments.r
-# Version:  RSEQREP 1.0.0
+# Version:  RSEQREP 1.1.0
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Calculate moderated log2 counts per million (before/after TMM normalization)
 #				and filter lowly expressed genes per specimen type.

@@ -19,10 +19,10 @@
 # This program is distributed in the hope that it will be useful, but "as is," WITHOUT ANY WARRANTY; 
 # without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 #
-# To cite this software, please reference doi:10.12688/f1000research.10464.1
+# To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  preprocess-rnaseq.pl 
-# Version:  RSEQREP 1.0.0
+# Version:  RSEQREP 1.1.0
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:	Clinical RNA-Seq data preprocessing pipeline
 # Input:	1) Workflow configuration file
@@ -138,8 +138,8 @@ while (my $entry = <$mta>) {
 			}
 		} 
 		
-		# if the file ends in sra, we will attempt to download it from the SRA FTP site
-		if ($fq1=~/sra$/) {
+		# if there is no "fastq" in the data, we will attempt to download it from the SRA using fastq-dump
+		if (!($fq1=~/fastq/)) {
 			my $sra_done_1 = "$doneDir"."_download_sra.done";
 			unless(-e $sra_done_1) {
 				my $return_down1 = downloadFileFromSra($dbh,$sampleId,$fq1,$fq1File,$tmpDir,$config{'fastqdump_prog'});
@@ -318,12 +318,17 @@ sub downloadFileFromS3{
 sub downloadFileFromSra{
 	my($dbh,$sampleId,$sra,$fqFile,$tmpDir,$sraProg)=@_;	
 	my $timeBefore = time();
-	(my $sraFile = $fqFile) =~ s/fastq.gz/sra/g;
-	my $cmd = "wget $sra -O $sraFile && $sraProg --gzip -O $tmpDir $sraFile && rm $sraFile";
+	# remove the tmp SRA file after successful downlaod of fastq file.
+	my $cmd = "$sraProg --gzip -O $tmpDir $sra && mv $tmpDir/$sra.fastq.gz $fqFile && rm -f /tmp/sra/$sra.sra"; 
 	print LOG "$cmd\n";
 	my ($bench_ref) = benchmark($cmd,$tmpDir);
 	print LOG "SRA download output:$$bench_ref{output}:\n";
 	print LOG "SRA download return code:$$bench_ref{return_code}:\n";
+	# re-run if the return code is not zero
+	if($$bench_ref{return_code}!=0) {
+		downloadFileFromSra($dbh,$sampleId,$sra,$fqFile,$tmpDir,$sraProg);
+		print LOG "Re-running SRA download due to non zero return code.\n";
+	}
 	my $downloaded_md5 = md5sum($fqFile);
 	my $processId = addProcess($dbh,$sampleId,$cmd,$$bench_ref{return_code},$timeBefore,time());
 	addFile($dbh,$sampleId,$processId,$fqFile,basename($fqFile),$downloaded_md5,bytes($fqFile),'fastq');

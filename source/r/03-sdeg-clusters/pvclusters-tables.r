@@ -16,13 +16,13 @@
 # You can redistribute and/or modify this program, including its components, only under the terms of 
 # the applicable license(s).  
 #
-# To cite this software, please reference doi:10.12688/f1000research.10464.1
+# To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # This program is distributed in the hope that it will be useful, but "as is," WITHOUT ANY WARRANTY; 
 # without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 #
 # Program:  pvclusters-tables.r
-# Version:  RSEQREP 1.0.0
+# Version:  RSEQREP 1.1.0
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Tabulate significant clusters
 # Input:    data/annot/filtered_gene_annotations.tab
@@ -58,7 +58,7 @@ for(s in 1:length(spcFlags)) {
 		
 		## if there is a significant file, generate xtable
 		if(file.exists(pvc.infile.sig)) {
-			clr.res = read.csv(pvc.infile.sig,header=t,sep='\t',stringsAsFactors=F)
+			clr.res = read.csv(pvc.infile.sig,header=T,sep='\t',stringsAsFactors=F)
 			
 			## update underscores to dashes:
 			clr.res$cluster_id = gsub('_','-',clr.res$cluster_id)

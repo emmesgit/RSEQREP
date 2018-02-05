@@ -19,10 +19,10 @@
 # This program is distributed in the hope that it will be useful, but "as is," WITHOUT ANY WARRANTY; 
 # without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 #
-# To cite this software, please reference doi:10.12688/f1000research.10464.1
+# To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  preprocessing-benchmarks-plot.r
-# Version:  RSEQREP 1.0.0
+# Version:  RSEQREP 1.1.0
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  generate plots on peak CPU time, Wall cloc time, RAM, and VM usage for each process
 # Input:    <pre-process-dir>/preprocess.db
@@ -57,7 +57,7 @@ if (rdFlag==F) {
 	process.types = process.types[-which(process.types=='reseqc bam read distribution')]
 	process.labs = process.labs[-which(process.labs=='RSeQC Read Distribution')]
 }
-if (grep('sra$',mta[1,'fastq_file_1'])==T) {
+if (length(grep('fastq',mta[1,'fastq_file_1']))==0) {
 	process.types = process.types[-which(process.types=='encrypted fastq')]
 	process.labs = process.labs[-which(process.labs=='Fastq S3 Download (AWS CLI)')]
 	process.labs[process.labs=='Fastq Decryption (OpenSSL)'] = 'Download SRA and convert to FASTQ'

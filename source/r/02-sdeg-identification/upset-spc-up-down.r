@@ -19,10 +19,10 @@
 # This program is distributed in the hope that it will be useful, but "as is," WITHOUT ANY WARRANTY; 
 # without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 #
-# To cite this software, please reference doi:10.12688/f1000research.10464.1
+# To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  upset-spc-up-down.r
-# Version:  RSEQREP 1.0.0
+# Version:  RSEQREP 1.1.0
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Generate Upset plots showing overlap in specimen types.  
 #			Each plot is added to a list and the list is printed at the end of the program
@@ -92,7 +92,7 @@ if (length(spcFlags) >= 2) {
 		 	## Print significant genes diagram
 			colnames(matrx) = paste(spcLabls,' (',colSums(abs(matrx)),')',sep='')
 			if (length(which(colSums(matrx)>0))>1) {
-				matrx.all = matrx[,colSums(matrx)!=0]
+				matrx.all = matrx[,colSums(abs(matrx))!=0]
 				vps = append(vps,list(grid.grabExpr(c(
 						upset(as.data.frame(abs(matrx.all)),mainbar.y.label='SDEG Intersection Size',sets.x.label='SDEG Set Size',mainbar.y.max=ceiling(max(table(apply(abs(matrx),1,paste,collapse=';')))*1.2),
 									matrix.color=lfc.cols[2],main.bar.color=lfc.cols[2],sets.bar.color=lfc.cols[2],sets=colnames(matrx.all),keep.order=T,order.by="freq"),

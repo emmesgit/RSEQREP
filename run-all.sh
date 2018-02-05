@@ -20,10 +20,10 @@
 # This program is distributed in the hope that it will be useful, but "as is," WITHOUT ANY WARRANTY; 
 # without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #
-# To cite this software, please reference doi:10.12688/f1000research.10464.1
+# To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  run-all.sh
-# Version:  RSEQREP 1.0.0
+# Version:  RSEQREP 1.1.0
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Master Shell script -- runs analysis from start to end.
 # Input:    N/A
@@ -31,11 +31,10 @@
 #############################################################################################################
 
 ## Point to config file
-CONFIG=config/config.xlsx
+CONFIG="$(cd `dirname $0` && pwd)/config/config.xlsx"
 
 ## Locate Source Directory from root
-CUR=`pwd`;
-SRCDIR="${CUR}/source";
+SRCDIR="$(cd `dirname $0` && pwd)/source";
 
 #################
 ##
@@ -49,21 +48,22 @@ SRCDIR="${CUR}/source";
 ## Index genome -- Unless already done
 Rscript $SRCDIR/r/parse-rnaseq-configuration.r $CONFIG $SRCDIR;
 
-## download kegg data and generate kegg pathway and kegg modules for gsea.
-## Unhash if you have a kegg license and you wish to generate kegg gene sets.
-## ./kegg/kegg-rest-ami-download.sh
-
 ## get workflow directory, analysis directory, workflow configuration and metadata csv file locations
-WCD=`head -1 dir.csv`;
-ACD=`head -2 dir.csv | tail -1`;
-WFC=`head -3 dir.csv | tail -1`;
-MTA=`tail -1 dir.csv`;
+WCD=`head -1 $SRCDIR/../dir.csv`;
+ACD=`head -2 $SRCDIR/../dir.csv | tail -1`;
+WFC=`head -3 $SRCDIR/../dir.csv | tail -1`;
+MTA=`tail -1 $SRCDIR/../dir.csv`;
 
 #################
 ##
 ## Run pre-processing
 ##
 #################
+
+## add config script for fastq-dump to throw the cache in /tmp.
+## otherwise .sra cache files are stored on the home directory
+mkdir $HOME/.ncbi;
+echo '/repository/user/main/public/root = "/tmp"' > $HOME/.ncbi/user-settings.mkfg
 
 ## Run sample pre-processing Perl script
 echo "cd $WCD";

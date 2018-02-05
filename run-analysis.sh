@@ -20,10 +20,10 @@
 # This program is distributed in the hope that it will be useful, but "as is," WITHOUT ANY WARRANTY; 
 # without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #
-# To cite this software, please reference doi:10.12688/f1000research.10464.1
+# To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  run-anamysis.sh
-# Version:  RSEQREP 1.0.0
+# Version:  RSEQREP 1.1.0
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  script to run analysis only steps (R based normalization, 
 #				PCA and MDS, DE gene Identification, gene clusters, and GSEA)
@@ -32,11 +32,10 @@
 #############################################################################################################
 
 ## Point to config file
-CONFIG=config/config.xlsx
+CONFIG="$(cd `dirname $0` && pwd)/config/config.xlsx"
 
-# Locate Source Directory from root
-CUR=`pwd`;
-SRCDIR="${CUR}/source";
+## Locate Source Directory from root
+SRCDIR="$(cd `dirname $0` && pwd)/source";
 
 #################
 ##
@@ -51,10 +50,10 @@ SRCDIR="${CUR}/source";
 Rscript $SRCDIR/r/parse-rnaseq-configuration.r $CONFIG $SRCDIR;
 
 ## get workflow directory, analysis directory, workflow configuration and metadata csv file locations
-WCD=`head -1 dir.csv`;
-ACD=`head -2 dir.csv | tail -1`;
-WFC=`head -3 dir.csv | tail -1`;
-MTA=`tail -1 dir.csv`;
+WCD=`head -1 $SRCDIR/../dir.csv`;
+ACD=`head -2 $SRCDIR/../dir.csv | tail -1`;
+WFC=`head -3 $SRCDIR/../dir.csv | tail -1`;
+MTA=`tail -1 $SRCDIR/../dir.csv`;
 
 #################
 ##

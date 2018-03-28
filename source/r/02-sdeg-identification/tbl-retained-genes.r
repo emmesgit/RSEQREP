@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  tbl-retained-genes.r
-# Version:  RSEQREP 1.1.0
+# Version:  RSEQREP 1.1.1
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Print # genes after filtering
 # Input:    analysis/lcpm/<spc>_<time>_analysis_gene_set.tab.gz

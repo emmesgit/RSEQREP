@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  gsea-venn-diagrams-time.r
-# Version:  RSEQREP 1.1.0
+# Version:  RSEQREP 1.1.1
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Generate Venn Diagram plots by time point for significant GSEA results
 # Input:    analysis/gsea/<spc>_<trt>_<time>_<gene-set-type>_gsea_all.tab.gz

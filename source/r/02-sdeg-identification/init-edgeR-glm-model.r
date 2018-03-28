@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  init-edgeR-glm-model.r
-# Version:  RSEQREP 1.1.0
+# Version:  RSEQREP 1.1.1
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Differential expression analysis using edgeR's GLM negative binomial model implementation. For each 
 #			post-treatment time, treatment group, and speciment type, model parameters are estimated and a likelihood 

@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  preprocess-rnaseq.pl 
-# Version:  RSEQREP 1.1.0
+# Version:  RSEQREP 1.1.1
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:	Clinical RNA-Seq data preprocessing pipeline
 # Input:	1) Workflow configuration file
@@ -138,8 +138,8 @@ while (my $entry = <$mta>) {
 			}
 		} 
 		
-		# if there is no "fastq" in the data, we will attempt to download it from the SRA using fastq-dump
-		if (!($fq1=~/fastq/)) {
+		# if the name starts with an upper case S, we will attempt to download it from the SRA using fastq-dump
+		if ($fq1=~/^S/) {
 			my $sra_done_1 = "$doneDir"."_download_sra.done";
 			unless(-e $sra_done_1) {
 				my $return_down1 = downloadFileFromSra($dbh,$sampleId,$fq1,$fq1File,$tmpDir,$config{'fastqdump_prog'});

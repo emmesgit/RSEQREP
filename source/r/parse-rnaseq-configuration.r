@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  parse-rnaseq-configuration.r
-# Version:  RSEQREP 1.1.0
+# Version:  RSEQREP 1.1.1
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Run sanity checks on configuration, create GMT formatted gene sets, download genome/transcriptome
 #				parse workflow and analysis configurations, create work space directories.
@@ -258,7 +258,7 @@ if(!file.exists(paste(gene.sets.file,'.gz',sep='')) & length(gmt.files)>0) {
 	cat('Preparing GSEA Gene Sets\n')
 	
 	## import ensembl annotations
-	ensembl = useEnsembl(biomart="ensembl", dataset="hsapiens_gene_ensembl", version=ensembl.version)
+	ensembl = useEnsembl(biomart="ensembl", dataset="hsapiens_gene_ensembl", version= ensembl.version)
 	att =  c('ensembl_gene_id','entrezgene','hgnc_symbol')
 	ens.ano = getBM(attributes=att,mart=ensembl)
 	colnames(ens.ano) = c('gene_id','entrez_id','gene_name')

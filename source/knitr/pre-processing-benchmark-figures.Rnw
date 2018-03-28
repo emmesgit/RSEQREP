@@ -22,7 +22,7 @@
 % without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 %
 % Program:  pre-processing-benchmark-figures.Rnw
-% Version:  RSEQREP 1.1.0
+% Version:  RSEQREP 1.1.1
 % Author:   Travis L. Jensen and Johannes B. Goll
 % Purpose: 	Knitr Code to integrate preprocessing benchmark figures
 % Input:    source/r/preprocessing-benchmarks-plot.r

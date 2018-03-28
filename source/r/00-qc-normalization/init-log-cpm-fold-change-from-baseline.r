@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  init-log-cpm-fold-change-from-baseline.r 
-# Version:  RSEQREP 1.1.0
+# Version:  RSEQREP 1.1.1
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose: 	For each specimen type, calculate log fold change from pre-treatment.  
 #				If multiple treatment points exist, utilize the mean.

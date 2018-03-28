@@ -12,8 +12,16 @@
 
 ### Option 2 (RSEQREP AWS AMI):
 
-* initialize RSEQREP AMI ((https://aws.amazon.com, AMI ID: RSEQREP (RNA-Seq Reports) v1.0 (ami-e1708b9b))).  To do this, log into the AWS console, navigate to the EC2 resources.  Next select AMIs in the navigation pane and select public images.  Finally search for RSEQREP and launch the AMI.
+* initialize RSEQREP AMI ((https://aws.amazon.com, AMI ID: RSEQREP (RNA-Seq Reports) v1.0 (ami-e1708b9b))).  To do this, create a AWS account (https://aws.amazon.com), log into the AWS console, and navigate to the EC2 resources.  Next select AMIs in the navigation pane and select public images.  Finally search for RSEQREP, find "RSEQREP (RNA-Seq Reports) v1.0" and launch the AMI (ensure you are in the US EAST (N. Virginia) region).
+* using an ssh command line connection or X2GO GUI supported connection client (https://wiki.x2go.org/doku.php/download:start) (XFCE session type) log into the RSEQREP AMI using username: rseqrepuser and password: RSEQREP2017. The IP address of your instance can be found on the AWS console EC2->Instances->"IPv4 Public IP".  Please note this IP will change every time the machine is started/stopped.
 * copy/clone the RSEQREP github source code to your Ubuntu machine (git clone https://github.com/emmesgit/RSEQREP.git).  Ensure read write and execute permissions are set for RSEQREP (chmod -R u+rwx RSEQREP).
+
+Additional information on AWS and AMI configuration can be found in RSEQREP/aws/aws_instructions.docx
+
+### Option 3 (RSEQREP Docker Image):
+
+* On an Ubuntu 16.04 machine with Docker software installed (https://docs.docker.com/install), pull RSEQREP image from the Docker repository (docker pull emmesdock/rseqrep) [https://hub.docker.com/r/emmesdock/rseqrep/]. Run the docker image as a container in interactive mode (docker run --name rseqrep1 -i -t emmesdock/rseqrep /bin/bash).
+* copy/clone the RSEQREP github source code to the container (git clone https://github.com/emmesgit/RSEQREP.git).  Ensure read write and execute permissions are set for RSEQREP (chmod -R u+rwx RSEQREP).
 
 ## EXECUTION
 
@@ -35,6 +43,15 @@ For a detailed explanation of the software and its capabilities please navigate 
 https://f1000research.com/articles/6-2162/v1
 
 ## RELEASE NOTES 
+
+### RSEQREP RNA-Seq Reports - Version 1.1.1
+
+#### Bug Fixes:
+
+* Previously unsorted feature counts matrix is now sorted by ensembl gene ID.
+* The code to generate Upset plots summarizing DE genes (reference code)  was not correctly reading input matrices
+* A missing "}" was added to RSEQREP/source/r/02-sdeg-identification/upset-trt-up-down.r.
+* Benchmark barplots in the report (RSEQREP/source/r/preprocessing-benchmarks-plot.r) now utilize only SQLite database entries with a return code of 0.
 
 ### RSEQREP RNA-Seq Reports - Version 1.1.0
 

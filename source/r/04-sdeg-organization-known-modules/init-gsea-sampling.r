@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  init-gsea-sampling.r
-# Version:  RSEQREP 1.1.0
+# Version:  RSEQREP 1.1.1
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Run gene set enrichment analysis using GOseq to adjust for 
 #			length bias in calling genes differentially expressed.

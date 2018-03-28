@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  init-export-annotations.r
-# Version:  RSEQREP 1.1.0
+# Version:  RSEQREP 1.1.1
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose: 	Export Ensembl annotation data
 # Input:    N/A
@@ -33,7 +33,7 @@
 source('init-analysis.r')
 
 ## import ensembl annotations
-ensembl = useEnsembl(biomart="ensembl", dataset="hsapiens_gene_ensembl", version=ensembl.version)
+ensembl = useEnsembl(biomart="ensembl", dataset="hsapiens_gene_ensembl", version= ensembl.version)
 att =  c('ensembl_gene_id','start_position','end_position','strand','gene_biotype','percentage_gc_content','transcript_count','description','chromosome_name','source','entrezgene','hgnc_id','hgnc_symbol','transcript_length','ensembl_transcript_id','ensembl_exon_id')
 if (ensembl.version > 87) {
 	att[att=='percentage_gc_content'] = 'percentage_gene_gc_content'

@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  pvclust-internal.R
-# Version:  RSEQREP 1.1.0
+# Version:  RSEQREP 1.1.1
 # Author:   Johannes Goll, Travis Jensen
 # Purpose:  a modification of the vennDiagram() function.  changes include updating
 #				updating the frame space and moving lables.

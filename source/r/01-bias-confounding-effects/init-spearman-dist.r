@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  init-spearman-dist.r
-# Version:  RSEQREP 1.1.0
+# Version:  RSEQREP 1.1.1
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Initialize Spearman distances used for multidimensional scaling
 # Input:    analysis/lcpm/<spc>_alltp_lcpm_<norm>_normalized_filtered.tab

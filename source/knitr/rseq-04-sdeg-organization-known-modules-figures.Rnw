@@ -22,7 +22,7 @@
 % To cite this software, please reference doi:10.12688/f1000research.13049.1
 %
 % Program:  rseq-04-gsea-organization-known-modules-figures.Rnw
-% Version:  RSEQREP 1.1.0
+% Version:  RSEQREP 1.1.1
 % Author:   Travis L. Jensen and Johannes B. Goll
 % Purpose: 	Knitr Code to build GSEA figures
 % Input:    source/r/04-sdeg-organization-known-modules/gsea-upset-time.r

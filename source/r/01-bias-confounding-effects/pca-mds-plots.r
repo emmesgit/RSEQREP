@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  pca-mds-plots.r
-# Version:  RSEQREP 1.1.0
+# Version:  RSEQREP 1.1.1
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Group level principal component analysis (PCA) and multi dimentional 
 #			scaling (MDS) plots based on Euclidean and Spearman distances.

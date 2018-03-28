@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  preprocessing-benchmarks-plot.r
-# Version:  RSEQREP 1.1.0
+# Version:  RSEQREP 1.1.1
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  generate plots on peak CPU time, Wall cloc time, RAM, and VM usage for each process
 # Input:    <pre-process-dir>/preprocess.db
@@ -34,7 +34,7 @@ source('../r/init-analysis.r')
 ## Import data
 sqlite.db.file = paste(pre.dir,'/preprocess.db',sep='')
 dta = dbGetQuery(dbConnect(dbDriver("SQLite"), dbname = sqlite.db.file), 
-		paste("select * from benchmark left join file on benchmark.process_id=file.process_id"))
+		paste("select * from benchmark left join file on benchmark.process_id=file.process_id where benchmark.return_code = 0"))
 		
 ## convert file size from bytes to Gib, and ram from Kib to Gib
 dta$file_bytes = dta$file_bytes/(1024^3)
@@ -57,11 +57,21 @@ if (rdFlag==F) {
 	process.types = process.types[-which(process.types=='reseqc bam read distribution')]
 	process.labs = process.labs[-which(process.labs=='RSeQC Read Distribution')]
 }
-if (length(grep('fastq',mta[1,'fastq_file_1']))==0) {
-	process.types = process.types[-which(process.types=='encrypted fastq')]
-	process.labs = process.labs[-which(process.labs=='Fastq S3 Download (AWS CLI)')]
+
+if (length(grep('^S',mta[1,'fastq_file_1']))>0) {
 	process.labs[process.labs=='Fastq Decryption (OpenSSL)'] = 'Download SRA and convert to FASTQ'
 }
+
+if (length(which(dta$file_type=='encrypted fastq'))==0) {
+	process.types = process.types[-which(process.types=='encrypted fastq')]
+	process.labs = process.labs[-which(process.labs=='Fastq S3 Download (AWS CLI)')]
+}
+
+if (length(which(dta$file_type=='fastq'))==0) {
+	process.types = process.types[-which(process.types=='fastq')]
+	process.labs = process.labs[-which(process.labs=='Fastq Decryption (OpenSSL)')]
+}
+
 if (cramFlag==F) {
 	process.types = process.types[-which(process.types=='mapped and unmapped CRAM file')]
 	process.labs = process.labs[-which(process.labs=='BAM Compression (CRAM)')]

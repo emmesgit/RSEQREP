@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  init-sample-meta-data.r
-# Version:  RSEQREP 1.1.0
+# Version:  RSEQREP 1.1.1
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose: 	merge sample metadata, rseqc, and featureCounts results
 # Input:    <pre_dir>/sample_metadata.csv
@@ -59,6 +59,7 @@ dta.rseqc.qc= read.table(paste(rseqc.dir,'/bam_qc_parsed.tab',sep=''),
 		header=T,stringsAsFactors=F,sep='\t');
 rseqc.qc.names= paste('rseqc.qc.',names(dta.rseqc.qc)[-1],sep='');
 colnames(dta.rseqc.qc)=c('samid',rseqc.qc.names);
+dta.rseqc.qc$rseqc.qc.total = dta.rseqc.qc$rseqc.qc.unique + dta.rseqc.qc$rseqc.qc.non_unique
 dta=merge(x=dta,y=dta.rseqc.qc,by.x='samid',by.y='samid',sort=F)
 
 ####################################################################################

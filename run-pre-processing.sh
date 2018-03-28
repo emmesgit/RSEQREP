@@ -23,7 +23,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  run-pre-processing.sh
-# Version:  RSEQREP 1.1.0
+# Version:  RSEQREP 1.1.1
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  script to run pre-processing only steps (FASTQ download, decrypt, align, 
 #				FASTQC, RSEQC, and featureCounts)

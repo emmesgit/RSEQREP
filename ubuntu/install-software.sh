@@ -23,7 +23,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  install-software.pl 
-# Version:  RSEQREP 1.1.0
+# Version:  RSEQREP 1.1.1
 # Author:   Kevin Conway and Leigh Villarroel
 # Purpose:  install software onto 16.0.4 Ubuntu desktop computer required for RSEQREP usage.
 # Input:    N/A
@@ -105,6 +105,8 @@ sudo apt-get -y install libtbb2 #for bowtie2
 sudo apt-get -y install openjdk-8-jdk #for R 3.4.1
 sudo apt-get -y install mesa-common-dev libglu1-mesa-dev  #R package rgl
 sudo apt-get -y install evince #PDF viewer
+sudo apt-get install libdbi-perl
+sudo apt-get install libdbd-sqlite3-perl
 
 
 
@@ -1992,6 +1994,8 @@ echo cython INSTALLED
 sudo /sbin/swapoff /var/swap.1
 sudo rm -f /var/swap.1
 
+# update permissions on python eggs (required for rseqc scripts)
+sudo chmod -R o+r /usr/local/lib/python2.7/dist-packages/RSeQC-2.6.4-py2.7.egg/EGG-INFO/requires.txtc
 
 echo Script Completed.
 ##end of script 

@@ -22,7 +22,7 @@
 % To cite this software, please reference doi:10.12688/f1000research.13049.1
 %
 % Program:  rseq-report.Rnw
-% Version:  RSEQREP 1.1.0
+% Version:  RSEQREP 1.1.1
 % Author:   Travis L. Jensen and Johannes B. Goll
 % Purpose: 	Knitr Code to genertae entire report -- Pulls .Rnw files for each specific step's figures/tables
 % Input:	rseq-00-qc-normalization-figures.Rnw
@@ -99,7 +99,7 @@ source('../r/init-analysis.r')
 
 % Table of contents
 \renewcommand\contentsname{Table of Contents}
-\fancyfoot[L]{This report was generated using \\ RSEQREP Version 1.0.0}
+\fancyfoot[L]{This report was generated using \\ RSEQREP Version 1.1.1}
 \fancyfoot[R]{https://github.com/emmesgit/RSEQREP}
 \renewcommand{\headrulewidth}{0pt}
 \fancyfoot[C]{-{\thepage\ of \pageref{LastPage}}-}
@@ -131,7 +131,7 @@ source('../r/init-analysis.r')
 \begin{document}
 
 % SPECIFY REPORT TITLE
-\title{\textbf{RNA-Seq Report (Version 1.0.0)} 
+\title{\textbf{RNA-Seq Report (Version 1.1.1)} 
 \ \\ 
 \ \\
 \ \\

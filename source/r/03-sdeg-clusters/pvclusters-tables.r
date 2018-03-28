@@ -22,7 +22,7 @@
 # without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 #
 # Program:  pvclusters-tables.r
-# Version:  RSEQREP 1.1.0
+# Version:  RSEQREP 1.1.1
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Tabulate significant clusters
 # Input:    data/annot/filtered_gene_annotations.tab

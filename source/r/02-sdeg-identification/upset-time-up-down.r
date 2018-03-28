@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  upset-time-up-down.r
-# Version:  RSEQREP 1.1.0
+# Version:  RSEQREP 1.1.1
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Generate Upset plots showing overlap in time points
 #			Each plot is added to a list and the list is printed at the end of the program
@@ -90,8 +90,8 @@ if (length(postb.times) >= 2) {
 		 	
 		 	## Print significant genes diagram
 			colnames(matrx) = paste(postb.times.l[-length(postb.times.l)],' (',colSums(abs(matrx)),')',sep='')
-			matrx = matrx[,length(matrx):1]
-			if (length(which(colSums(matrx)>0))>1) {
+			matrx = matrx[,ncol(matrx):1]
+			if (length(which(colSums(abs(matrx))>0))>1) {
 				matrx.all = matrx[,colSums(matrx)!=0]
 				vps = append(vps,list(grid.grabExpr(c(
 						upset(as.data.frame(abs(matrx.all)),mainbar.y.label='SDEG Intersection Size',sets.x.label='SDEG Set Size',mainbar.y.max=ceiling(max(table(apply(abs(matrx),1,paste,collapse=';')))*1.2),
@@ -166,10 +166,10 @@ if (length(postb.times) >= 2) {
 				## Print significant genes diagram
 				colnames(matrx) = paste(postb.times.l[-length(postb.times.l)],' (',colSums(matrx),')',sep='')
 				matrx = matrx[,colSums(matrx)!=0]
-				matrx = matrx[,length(matrx):1]
+				matrx = matrx[,ncol(matrx):1]
 				if (length(which(colSums(matrx)>0))>1) {
 					vps = append(vps,list(grid.grabExpr(c(
-						upset(matrx,nsets=ncol(matrx),mainbar.y.label='SDEG Intersection Size',sets.x.label='SDEG Set Size',mainbar.y.max=ceiling(max(table(apply(abs(matrx),1,paste,collapse=';')))*1.2),
+						upset(as.data.frame(matrx),nsets=ncol(matrx),mainbar.y.label='SDEG Intersection Size',sets.x.label='SDEG Set Size',mainbar.y.max=ceiling(max(table(apply(abs(matrx),1,paste,collapse=';')))*1.2),
 									matrix.color=lfc.cols[2],main.bar.color=lfc.cols[2],sets.bar.color=lfc.cols[2],sets=colnames(matrx),keep.order=T,order.by="freq"),
 								grid.rect(width = .98, height = .98, gp = gpar(lwd = 2, col = "black")),
 								grid.text(paste('All Treatment Groups\n',spcLabl,sep=''),x = unit(0.68, "npc"), y = unit(0.96, "npc"),gp=gpar(font=2,cex=1),just='top'),

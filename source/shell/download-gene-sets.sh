@@ -23,7 +23,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  download-gene-sets.sh
-# Version:  RSEQREP 1.1.0
+# Version:  RSEQREP 1.1.1
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Download Blood transcription module gene sets, Reactome gene sets, and kegg pathway AMI based gene sets
 # Input:    N/A

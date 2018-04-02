@@ -25,12 +25,13 @@ Additional information on AWS and AMI configuration can be found in RSEQREP/aws/
 
 ## EXECUTION
 
-* fill out the configuration file (RSEQREP/config/config.xlsx).  RSEQREP/case-study/config-henn.xlsx is an example of a complete configuration file. 
+* Download GMT formatted gene sets for pathway enrichment (if no gene sets are specified, pathway enrichment is not performed).  We provide a custom script (https://github.com/emmesgit/RSEQREP/blob/master/source/shell/download-gene-sets.sh) to download Blood Transcription Modules (option btm), Reactome pathways (reactome option), and KEGG pathways (kegg option). Note for the KEGG option you need to either be an academic user or have a commercial KEGG license (http://www.kegg.jp/kegg/rest).  Gene sets can also be downloaded from MSigDB after email registration (http://software.broadinstitute.org/gsea/msigdb).  Specify the locations and labels of the gene sets in the gmt_entrez_files and gmt_entrez_files_labels fields of the worklfow_config tab of the configuration file (RSEQREP/config/config.xlsx).
+* fill out the configuration file (RSEQREP/config/config.xlsx).  RSEQREP/case-study/config-henn.xlsx is an example of a complete configuration file.
 * execute start-to-end analysis (sh RSEQREP/run-all.sh) or for a particular component (sh RSEQREP/run-pre-processing.sh; sh RSEQREP/run-analysis.sh; sh RSEQREP/run-report.sh).
  
 ## TROUBLESHOOTING
 
-Upon inspecting the initial run of the report, you may find that the configuration option that you initially chose does not fit your data.  For example, you inspect the reverse cumulative distribution function plot comparing log count per million cutoffs with the number of retained genes.  You find that the cutoff you had originally selected resulted in too few genes for the analysis.  To remedy this, you would update the configuration file to reflect a more appropriate log counts per million cutoff.  You then determine the steps of the analysis that will be affected by this configuration change.  In this case, the analysis and report steps are affected.  Re-execute the analysis and report steps (sh RSEQREP/run-analysis.sh; sh RSEQREP/run-report.sh).  The configuration file is re-parsed each time a RSEQREP/run-* script is executed.
+Upon inspecting the initial run of the report, you may find that the configuration option that you initially chose does not fit your data.  For example, you inspect the reverse cumulative distribution function plot comparing log count per million cutoffs with the number of retained genes.  You find that the cutoff you had originally selected resulted in too few genes for the analysis.  To remedy this, you would update the configuration file to reflect a more appropriate log counts per million cutoff.  You then determine the steps of the analysis that will be affected by this configuration change.  In this case, the analysis and report steps are affected.  Re-execute the analysis and report steps (sh RSEQREP/run-analysis.sh; sh RSEQREP/run-report.sh).  The configuration file is re-parsed each time a RSEQREP/run-* script is executed. Please see https://github.com/emmesgit/RSEQREP/wiki for additional information.
  
 ## BUGS/ISSUES
 
@@ -43,6 +44,10 @@ For a detailed explanation of the software and its capabilities please navigate 
 https://f1000research.com/articles/6-2162/v1
 
 ## RELEASE NOTES 
+
+### RSEQREP RNA-Seq Reports - Version 1.1.2
+
+* Updated README file to include information about how to download external gene set information for pathway enrichment analysis and how to include this information in the RSEQREP configuration file
 
 ### RSEQREP RNA-Seq Reports - Version 1.1.1
 

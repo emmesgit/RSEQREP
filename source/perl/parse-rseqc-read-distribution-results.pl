@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  parse-rseqc-read-distribution-results.pl 
-# Version:  RSEQREP 1.1.1
+# Version:  RSEQREP 1.1.2
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:	Parse RSeqC read_distribution.py results
 # Input:	list of absolute file paths

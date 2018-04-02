@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  hcl-plots.r
-# Version:  RSEQREP 1.1.1
+# Version:  RSEQREP 1.1.2
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  generate hierarchical clustering plots based on per_subject data for outlier analysis
 # Input:    analysis/dist/<spc>_alltp_euc_dist_tmm_normalized_<std>.RData

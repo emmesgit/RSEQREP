@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  gsea-heatmap.r
-# Version:  RSEQREP 1.1.1
+# Version:  RSEQREP 1.1.2
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Generate heatmaps for the top 50 enriched pathways based on jaccard index sums across conditions 
 # 			enriched in at least 2 conditions (time,trt,spc).

@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  preprocessing-benchmarks-plot.r
-# Version:  RSEQREP 1.1.1
+# Version:  RSEQREP 1.1.2
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  generate plots on peak CPU time, Wall cloc time, RAM, and VM usage for each process
 # Input:    <pre-process-dir>/preprocess.db

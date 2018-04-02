@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  init-reactome-gmt.r
-# Version:  RSEQREP 1.1.1
+# Version:  RSEQREP 1.1.2
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose: 	generate Reactome based GMT formatted gene sets for enrichment analysis
 # Input:    http://www.reactome.org/download/current/Ensembl2Reactome.txt

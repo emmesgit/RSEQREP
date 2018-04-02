@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  tbl-excluded-genes.r 
-# Version:  RSEQREP 1.1.1
+# Version:  RSEQREP 1.1.2
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Tabulate genes that were removed prior to the analysis.
 # Input:    data/annot/excluded_gene_counts.tab

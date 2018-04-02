@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  venn-diagram-spc-up-down.r
-# Version:  RSEQREP 1.1.1
+# Version:  RSEQREP 1.1.2
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Generate Venn diagrams showing overlap in specimen types
 # Input:    analysis/glm/<scp>_<trt>_<time>_glm_sig.tab.gz

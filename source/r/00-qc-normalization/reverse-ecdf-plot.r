@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  reverse-ecdf-plot.r
-# Version:  RSEQREP 1.1.1
+# Version:  RSEQREP 1.1.2
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  reverse cumulative distribution function plots summarizing the percentage of genes that 
 #			exceeded a certain logCPM cut off for the number of samples specified.  A line will be generated

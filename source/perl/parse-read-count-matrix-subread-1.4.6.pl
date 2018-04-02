@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  parse-read-count-matrix-subread-1.4.6.pl
-# Version:  RSEQREP 1.1.1
+# Version:  RSEQREP 1.1.2
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:	Parse read counts from vertical format and outputs gene by sample matrix
 # Input:	File list with tab delimited read count results

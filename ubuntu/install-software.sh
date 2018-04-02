@@ -23,7 +23,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  install-software.pl 
-# Version:  RSEQREP 1.1.1
+# Version:  RSEQREP 1.1.2
 # Author:   Kevin Conway and Leigh Villarroel
 # Purpose:  install software onto 16.0.4 Ubuntu desktop computer required for RSEQREP usage.
 # Input:    N/A

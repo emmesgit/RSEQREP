@@ -166,7 +166,7 @@ while (my $entry = <$mta>) {
 		unless(-e $merge_done_1) {
 			my $joinstr = join ' ', @fq1snew;
 			if (scalar(@fq1snew)>1) {
-				`zcat $joinstr | gzip > $fq1File`;
+				`cat $joinstr > $fq1File`;
 				`rm $joinstr`; # clean up
 			} else {
 				`mv $joinstr $fq1File`;
@@ -231,7 +231,7 @@ while (my $entry = <$mta>) {
 			unless(-e $merge_done_2) {
 				my $joinstr = join ' ', @fq2snew;
 				if (scalar(@fq2snew)>1) {
-					`zcat $joinstr | gzip > $fq2File`;
+					`cat $joinstr > $fq2File`;
 					`rm $joinstr`; # clean up
 				} else {
 					`mv $joinstr $fq2File`;

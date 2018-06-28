@@ -11,7 +11,7 @@
 # version 3 (or later), and the LaTeX Project Public License v.1.3(c). A list of the software contained 
 # in this program, including the applicable licenses, can be accessed here: 
 # 
-# https://github.com/emmesgit/RSEQREP/SOFTWARE.xlsx  
+# https://github.com/emmesgit/RSEQREP/blob/master/SOFTWARE.xlsx  
 # 
 # You can redistribute and/or modify this program, including its components, only under the terms of 
 # the applicable license(s).  
@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  gsea-heatmap.r
-# Version:  RSEQREP 1.1.2
+# Version:  RSEQREP 1.1.3
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Generate heatmaps for the top 50 enriched pathways based on jaccard index sums across conditions 
 # 			enriched in at least 2 conditions (time,trt,spc).
@@ -112,7 +112,8 @@ if (file.exists(sets.infile)) {
 	}
 	
 	## if no significant results, joined is just an empty vector
-	if (is.data.frame(joined)) {
+	joined = as.data.frame(joined)
+	if (nrow(joined) > 0) {
 	
 		## get gene sets that are enriched in at least 2 condidtions (specimen type, treatment type, or time point)
 		cat.gt2 = sqldf('select category_type,category_name,category_name,count(distinct spc_type) as spc_count, count(distinct trt_type) as trt_count,
@@ -154,7 +155,7 @@ if (file.exists(sets.infile)) {
 					
 					## update matrices
 					mtx.not[,n] = sam.counts[match(categories,sam.counts$category_name),'count'];		# SDEG Counts
-					mtx.cnt[,n] = sam.counts[match(categories,sam.counts$category_name),'es_or'];		# SDEG-geneset Jaccard Index
+					mtx.cnt[,n] = sam.counts[match(categories,sam.counts$category_name),'es_or'];		# SDEG-geneset enrichment score
 					mtx.not[sig.idx,n] = paste('[',mtx.not[sig.idx,n],']',sep='')						# add brackets if Enriched
 					mtx.bin[sig.idx,n] = 1																# is enrighed? 1==T
 				}
@@ -171,7 +172,7 @@ if (file.exists(sets.infile)) {
 					
 				## Report only top 50 (Jaccard Index) if there are more than 50 entries
 				if(nrow(mtx.cnt)>50) {
-					idx = head(order(rowSums(mtx.cnt)),50);
+					idx = head(order(rowSums(mtx.cnt),decreasing=T),50);
 					x = mtx.cnt[idx,];
 					mtx.bin = mtx.bin[idx,]
 					mtx.not = mtx.not[idx,]
@@ -188,10 +189,6 @@ if (file.exists(sets.infile)) {
 				color.breaks[2] = 0.001
 				range = round(seq(0,max(x),max(x)/length(heatcolor)),3);
 				
-				## generate dendrograms using jaccard distance (enriched vs. non_enriched) and complete linkage clustering
-				row.res.hcl = hclust(dist(mtx.bin,method='binary'),method='complete');	
-				row.den = as.dendrogram(row.res.hcl);
-				
 				## plotting parameters
 				cex.row = round(min((1/(min(550,nrow(x))/1))*14,0.6),2);
 				par(oma=c(0,1,0,0));
@@ -202,7 +199,7 @@ if (file.exists(sets.infile)) {
 				## plot
 				heatmap.2(x,
 						main=paste('Pathway Enrichment Heatmap\n(',geneset.type,')',sep=''),  
-						Rowv=row.den, 
+						Rowv=FALSE, 
 						Colv=FALSE,
 						xlab='',
 						ylab='',

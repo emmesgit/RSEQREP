@@ -11,7 +11,7 @@
 # version 3 (or later), and the LaTeX Project Public License v.1.3(c). A list of the software contained 
 # in this program, including the applicable licenses, can be accessed here: 
 # 
-# https://github.com/emmesgit/RSEQREP/SOFTWARE.xlsx  
+# https://github.com/emmesgit/RSEQREP/blob/master/SOFTWARE.xlsx  
 # 
 # You can redistribute and/or modify this program, including its components, only under the terms of 
 # the applicable license(s).  
@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  gsea-tables.r
-# Version:  RSEQREP 1.1.2
+# Version:  RSEQREP 1.1.3
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Tabulate significant GSEA results
 # Input:    analysis/gsea/<spc>_<trt>_<time>_<gene-set-type>_gsea_all.tab.gz
@@ -101,9 +101,6 @@ if (file.exists(sets.infile)) {
 						if (file.exists(sigfile)) {	
 							sig = rownames(read.table(sigfile,header=T,stringsAsFactors=F,sep='\t'))
 						}
-						
-						## order by FDR then by Jaccard index
-						res = sqldf("select * from res order by fdr_or asc, jidx desc")
 						
 						res$FDR[res$fdr_or<0.0001]='<0.0001';
 						res$FDR[res$fdr_or==1]='>0.9999';

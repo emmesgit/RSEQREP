@@ -45,6 +45,18 @@ https://f1000research.com/articles/6-2162/v1
 
 ## RELEASE NOTES 
 
+### RSEQREP RNA-Seq Reports - Version 1.1.3
+
+#### New Features:
+
+* Multiplexed fastq files can be merged by specifying a semicolon separated list in the configuration file fastq fields. This will work for all download/decryption methods (Amazon S3, local, and SRA Archive).
+
+#### Bug Fixes:
+
+* Previously unsorted pathway enrichment flat files are now sorted by FDR adjusted P-value (ascending order) followed by Jaccard similarity index (descending order).
+* Using an empty sting as input for GMT file locations/names in the configuration file for the pathway enrichment analysis would break the program.  An empty string for GMT file locations can now be supplied. In that case no pathway enrichment analysis will take place.
+* SOFTWARE.xlsx link repaired in program headers.
+
 ### RSEQREP RNA-Seq Reports - Version 1.1.2
 
 * Updated README file to include information about how to download external gene set information for pathway enrichment analysis and how to include this information in the RSEQREP configuration file

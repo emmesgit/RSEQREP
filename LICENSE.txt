@@ -11,4 +11,4 @@ namely, the GNU General Public License version 3 (or later), the GNU Affero
  A list of the software contained in this program, including the applicable licenses, can be
   accessed here: 
   
-https://github.com/emmesgit/RSEQREP/SOFTWARE.xlsx  
+https://github.com/emmesgit/RSEQREP/blob/master/SOFTWARE.xlsx    

@@ -11,7 +11,7 @@
 # version 3 (or later), and the LaTeX Project Public License v.1.3(c). A list of the software contained 
 # in this program, including the applicable licenses, can be accessed here: 
 # 
-# https://github.com/emmesgit/RSEQREP/SOFTWARE.xlsx  
+# https://github.com/emmesgit/RSEQREP/blob/master/SOFTWARE.xlsx  
 # 
 # You can redistribute and/or modify this program, including its components, only under the terms of 
 # the applicable license(s).  
@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  volcano-plots.r
-# Version:  RSEQREP 1.1.2
+# Version:  RSEQREP 1.1.3
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Generate volcano plots. Color scheme: red=Significant, black=fold change 
 #				outside of +_1.5, dark grey=non significant inside of +_1.5 fold change

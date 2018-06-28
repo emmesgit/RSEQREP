@@ -11,7 +11,7 @@
 # version 3 (or later), and the LaTeX Project Public License v.1.3(c). A list of the software contained 
 # in this program, including the applicable licenses, can be accessed here: 
 # 
-# https://github.com/emmesgit/RSEQREP/SOFTWARE.xlsx  
+# https://github.com/emmesgit/RSEQREP/blob/master/SOFTWARE.xlsx  
 # 
 # You can redistribute and/or modify this program, including its components, only under the terms of 
 # the applicable license(s).  
@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  init-gsea-sampling.r
-# Version:  RSEQREP 1.1.2
+# Version:  RSEQREP 1.1.3
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Run gene set enrichment analysis using GOseq to adjust for 
 #			length bias in calling genes differentially expressed.
@@ -125,6 +125,9 @@ if (file.exists(sets.infile)) {
 							res[r,'sdeg_genes_upr']=sum(gen.set[gen.set$category_name == cat.id,'gene_id'] %in% gen.upr);
 							res[r,'sdeg_genes_dwr']=sum(gen.set[gen.set$category_name == cat.id,'gene_id'] %in% gen.dwr);
 						}
+						
+						## sort table
+						res = sqldf("select * from res order by fdr_or asc, jidx desc")
 						
 						## write all results
 						out.file.res = paste(out.dir.gsea,'/',spcFlag,'_',trtFlag,'_tp',time,'_',gsub(' ','_',tolower(geneset.type)),'_gsea_all.tab',sep='');

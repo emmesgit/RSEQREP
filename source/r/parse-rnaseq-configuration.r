@@ -11,7 +11,7 @@
 # version 3 (or later), and the LaTeX Project Public License v.1.3(c). A list of the software contained 
 # in this program, including the applicable licenses, can be accessed here: 
 # 
-# https://github.com/emmesgit/RSEQREP/SOFTWARE.xlsx  
+# https://github.com/emmesgit/RSEQREP/blob/master/SOFTWARE.xlsx  
 # 
 # You can redistribute and/or modify this program, including its components, only under the terms of 
 # the applicable license(s).  
@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  parse-rnaseq-configuration.r
-# Version:  RSEQREP 1.1.2
+# Version:  RSEQREP 1.1.3
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:  Run sanity checks on configuration, create GMT formatted gene sets, download genome/transcriptome
 #				parse workflow and analysis configurations, create work space directories.
@@ -102,18 +102,6 @@ if(!(file.exists(progs[1])) & !(file.exists(progs[2]))) {
 if (!dir.exists(base.dir)) {
 	cat(paste('Base directory does not exist!',base.dir))
 	q(status=25,save='no')
-}
-
-## ensure all AWS S3 keys exist
-if (length(aws.s3.fq.files)>0) {
-	for (i in 1:length(aws.s3.fq.files)) {
-		## perform dryrun and check for errors -- System call will kill the program with error to STDERR if there is an error.
-		sys.res = system(paste(aws.prog,'s3 cp --dryrun',aws.s3.fq.files[i],"./"),intern=T)
-		if(length(grep('error',sys.res)) > 0) {
-			cat(paste('Amazon S3 key does not exist!',aws.s3.fq.files[i],'\n'))
-			q(status=25,save='no')
-		}
-	}
 }
 
 ## ensure colors are defined correctly
@@ -254,7 +242,7 @@ if(!file.exists(genome.file)) {
 
 ## Create Gene Set tab delaminated file
 gene.sets.file = paste(results.dir,'data/gene_sets/all.ensembl.tab',sep='/')
-if(!file.exists(paste(gene.sets.file,'.gz',sep='')) & length(gmt.files)>0) {
+if(!file.exists(paste(gene.sets.file,'.gz',sep='')) & length(gmt.files)>0 & gmt.files[1]!='') {
 	cat('Preparing GSEA Gene Sets\n')
 	
 	## import ensembl annotations

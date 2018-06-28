@@ -11,7 +11,7 @@
 # version 3 (or later), and the LaTeX Project Public License v.1.3(c). A list of the software contained 
 # in this program, including the applicable licenses, can be accessed here: 
 # 
-# https://github.com/emmesgit/RSEQREP/SOFTWARE.xlsx  
+# https://github.com/emmesgit/RSEQREP/blob/master/SOFTWARE.xlsx  
 # 
 # You can redistribute and/or modify this program, including its components, only under the terms of 
 # the applicable license(s).  
@@ -22,7 +22,7 @@
 # To cite this software, please reference doi:10.12688/f1000research.13049.1
 #
 # Program:  preprocess-rnaseq.pl 
-# Version:  RSEQREP 1.1.2
+# Version:  RSEQREP 1.1.3
 # Author:   Travis L. Jensen and Johannes B. Goll
 # Purpose:	Clinical RNA-Seq data preprocessing pipeline
 # Input:	1) Workflow configuration file
@@ -40,7 +40,7 @@
 ## Specify packages
 use strict;
 use warnings;
-use DBI;	
+use DBI;
 use File::Basename;
 use POSIX qw(:sys_wait_h);
 $|++;
@@ -113,73 +113,132 @@ while (my $entry = <$mta>) {
 		my $doneDir 		= "$outDir/done/$samid";
 		my $sampleId = 		addSample($dbh,$samid);
 		
+		# split fastq strings if there are mutiple entries
+		my @fq1s = split(/;/, $fq1);
+		my @fq1snew = ();
+		foreach my $fq1x(@fq1s) {
+			my $basefq1x = basename($fq1x);
+			if($fq1x=~/^s3:\/\//) {
+				my $down_done_1 = "$doneDir"."_download_fq1_"."$basefq1x".".done";
+				unless(-e $down_done_1) {
+					my $return_down1 = downloadFileFromS3($dbh,$sampleId,$fq1x,"$tmpDir/$basefq1x",$tmpDir,$config{'aws_prog'});
+					if ($return_down1 == 0) {
+						`touch $down_done_1`;
+					}
+				}
+			} 
+			
+			# if the file extention is NOT .fq or .fastq, we will attempt to download it from the SRA using fastq-dump
+			if (!($fq1x=~/.fastq|.fq|.FASTQ|.FQ/)) {
+				my $sra_done_1 = "$doneDir"."_download_sra_"."$basefq1x".".done";
+				unless(-e $sra_done_1) {
+					my $return_down1 = downloadFileFromSra($dbh,$sampleId,$fq1x,"$tmpDir/$basefq1x",$tmpDir,$config{'fastqdump_prog'});
+					if ($return_down1 == 0) {
+						`touch $sra_done_1`;
+					}
+				}
+			}
+			
+			# if the file is encrypted -- ending in "enc" or "encr" -- decrypt it.
+			if ($fq1x=~/enc[r]?$/) {
+				my $decrypt_done_1 = "$doneDir"."_decrypt_fq1_"."$basefq1x".".done";
+				unless (-e $decrypt_done_1) {
+					my $basefq1xd = "$basefq1x".".decrypted";
+					my $return_decrypt1 = decryptFile($dbh,$sampleId,"$tmpDir/$basefq1x","$tmpDir/$basefq1xd",0,$tmpDir,$config{'openssl_prog'},$config{'decrypt_pass'});
+					`rm $tmpDir/$basefq1x`; # clean up
+					$basefq1x = $basefq1xd;
+					if ($return_decrypt1 == 0) {
+						`touch $decrypt_done_1`;
+					}
+				}
+			}
+			
+			# if from local file, just set name, otherwise point to tmp dir
+			if ($fq1x=~/^\//) {
+				push @fq1snew, "$fq1x";
+			} else {
+				push @fq1snew, "$tmpDir/$basefq1x";
+			}
+		}
+		
+		# merge fastq files together
+		my $merge_done_1 = "$doneDir"."_merge_fastq_1.done";
+		unless(-e $merge_done_1) {
+			my $joinstr = join ' ', @fq1snew;
+			if (scalar(@fq1snew)>1) {
+				`zcat $joinstr | gzip > $fq1File`;
+				`rm $joinstr`; # clean up
+			} else {
+				`mv $joinstr $fq1File`;
+			}
+			`touch $merge_done_1`;
+		}
+			
 		# If not specified, replace with empty string
 		if ($fq2 eq '') {
 			$fq2File = '';
-		}
-		
-		# if the file has "s3://" at the beginning of the file name, download it from the s3 bucket.
-		# we assume paired reads will be tored in the same place -- Both S3 or both local
-		
-		if($fq1=~/^s3:\/\//) {
-			my $down_done_1 = "$doneDir"."_download_fq1.done";
-			unless(-e $down_done_1) {
-				my $return_down1 = downloadFileFromS3($dbh,$sampleId,$fq1,"$fq1File.enc",$tmpDir,$config{'aws_prog'});
-				if ($return_down1 == 0) {
-					`touch $down_done_1`;
-				}
-			}
-			my $down_done_2 = "$doneDir"."_download_fq2.done";
-			unless(-e $down_done_2 || $fq2 eq '') {
-				my $return_down2 = downloadFileFromS3($dbh,$sampleId,$fq2,"$fq2File.enc",$tmpDir,$config{'aws_prog'});
-				if ($return_down2 == 0) {
-					`touch $down_done_2`;
-				}
-			}
-		} 
-		
-		# if the name starts with an upper case S, we will attempt to download it from the SRA using fastq-dump
-		if ($fq1=~/^S/) {
-			my $sra_done_1 = "$doneDir"."_download_sra.done";
-			unless(-e $sra_done_1) {
-				my $return_down1 = downloadFileFromSra($dbh,$sampleId,$fq1,$fq1File,$tmpDir,$config{'fastqdump_prog'});
-				if ($return_down1 == 0) {
-					`touch $sra_done_1`;
-				}
-			}
-			my $sra_done_2 = "$doneDir"."_download_sra.done";
-			unless(-e $sra_done_2 || $fq2 eq '') {
-				my $return_down2 = downloadFileFromSra($dbh,$sampleId,$fq2,$fq2File,$tmpDir,$config{'fastqdump_prog'});
-				if ($return_down2 == 0) {
-					`touch $sra_done_2`;
-				}
-			}
-		}
-		
-		# if the file is encrypted -- ending in "enc" or "encr" -- decrypt it.
-		if ($fq1=~/enc[r]?$/) {
-			my $decrypt_done_1 = "$doneDir"."_decrypt_fq1.done";
-			unless (-e $decrypt_done_1) {
-				my $return_decrypt1 = decryptFile($dbh,$sampleId,"$fq1File.enc",$fq1File,0,$tmpDir,$config{'openssl_prog'},$config{'decrypt_pass'});
-				if ($return_decrypt1 == 0) {
-					`touch $decrypt_done_1`;
-				}
-			}
-			my $decrypt_done_2 = "$doneDir"."_decrypt_fq2.done";
-			unless(-e $decrypt_done_2 || $fq2 eq '') {
-				my $return_decrypt2 = decryptFile($dbh,$sampleId,"$fq2File.enc",$fq2File,0,$tmpDir,$config{'openssl_prog'},$config{'decrypt_pass'});
-				if ($return_decrypt2 == 0) {
-					`touch $decrypt_done_2`;
-				}
-			}	
 		} else {
-			`cp $fq1 $fq1File`;
-			unless ($fq2 eq '') {
-				`cp $fq2 $fq2File`;
+			# split fastq strings if there are mutiple entries
+			my @fq2s = split(/;/, $fq2);
+			my @fq2snew = ();
+			foreach my $fq2x(@fq2s) {
+				my $basefq2x = basename($fq2x);
+				if($fq2x=~/^s3:\/\//) {
+					my $down_done_1 = "$doneDir"."_download_fq2_"."$basefq2x".".done";
+					unless(-e $down_done_1) {
+						my $return_down1 = downloadFileFromS3($dbh,$sampleId,$fq2x,"$tmpDir/$basefq2x",$tmpDir,$config{'aws_prog'});
+						if ($return_down1 == 0) {
+							`touch $down_done_1`;
+						}
+					}
+				} 
+				
+				# if the file extention is NOT .fq or .fastq, we will attempt to download it from the SRA using fastq-dump
+				if (!($fq2x=~/.fastq|.fq|.FASTQ|.FQ/)) {
+					my $sra_done_1 = "$doneDir"."_download_sra_"."$basefq2x".".done";
+					unless(-e $sra_done_1) {
+						my $return_down1 = downloadFileFromSra($dbh,$sampleId,$fq2x,"$tmpDir/$basefq2x",$tmpDir,$config{'fastqdump_prog'});
+						if ($return_down1 == 0) {
+							`touch $sra_done_1`;
+						}
+					}
+				}
+				
+				# if the file is encrypted -- ending in "enc" or "encr" -- decrypt it.
+				if ($fq2x=~/enc[r]?$/) {
+					my $decrypt_done_1 = "$doneDir"."_decrypt_fq2_"."$basefq2x".".done";
+					unless (-e $decrypt_done_1) {
+						my $basefq2xd = "$basefq2x".".decrypted";
+						my $return_decrypt1 = decryptFile($dbh,$sampleId,"$tmpDir/$basefq2x","$tmpDir/$basefq2xd",0,$tmpDir,$config{'openssl_prog'},$config{'decrypt_pass'});
+						`rm $tmpDir/$basefq2x`; # clean up
+						$basefq2x = $basefq2xd;
+						if ($return_decrypt1 == 0) {
+							`touch $decrypt_done_1`;
+						}
+					}
+				}
+				
+				# if from local file, just set name, otherwise point to tmp dir
+				if ($fq2x=~/^\//) {
+					push @fq2snew, "$fq2x";
+				} else {
+					push @fq2snew, "$tmpDir/$basefq2x";
+				}
+			}
+			
+			# merge fastq files together
+			my $merge_done_2 = "$doneDir"."_merge_fastq_2.done";
+			unless(-e $merge_done_2) {
+				my $joinstr = join ' ', @fq2snew;
+				if (scalar(@fq2snew)>1) {
+					`zcat $joinstr | gzip > $fq2File`;
+					`rm $joinstr`; # clean up
+				} else {
+					`mv $joinstr $fq2File`;
+				}
+				`touch $merge_done_2`;
 			}
 		}
-		
-		
 		
 		# perform STAR read assembly (indexing performed if needed)
 		my $star_done = "$doneDir"."_star.done";
@@ -674,8 +733,8 @@ sub benchmark{
 			}
 			
 			# Grab sum of all running threads under $pid and (sum the RSS, then sum the Virtual) every second
-			my $rss_mem = `pstree -p -A $pid | grep -o -P "[0-9]{1,5}" | xargs ps -o rss |  awk '{ sum+=\$1} END {print sum}'`;
-			my $virt_mem = `pstree -p -A $pid | grep -o -P "[0-9]{1,5}" | xargs ps -o vsz |  awk '{ sum+=\$1} END {print sum}'`;
+			my $rss_mem = `pstree -p -A $pid | grep -o -P "[0-9]{1,6}" | xargs ps -o rss |  awk '{ sum+=\$1} END {print sum}'`;
+			my $virt_mem = `pstree -p -A $pid | grep -o -P "[0-9]{1,6}" | xargs ps -o vsz |  awk '{ sum+=\$1} END {print sum}'`;
 			if ($rss_mem > $max_rss_mem) {$max_rss_mem = $rss_mem;}
 			if ($virt_mem > $max_virt_mem) {$max_virt_mem = $virt_mem;}
 			sleep 1;
